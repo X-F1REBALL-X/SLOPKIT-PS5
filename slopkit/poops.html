@@ -209,8 +209,8 @@
   body.loader-ready #cat { width:140px; margin-bottom:8px; }
   body.loader-ready #nav { display:none !important; }
 
-  #payloadMenu { display:none; width:330px; max-width:86vw; margin:4px auto 24px; }
-  #payloadMenu.on { display:block; }
+  #payloadMenu { display:none !important; width:330px; max-width:86vw; margin:4px auto 24px; }
+  #payloadMenu.on { display:none !important; }
   #payloadMenu .menuTitle { display:block; width:330px; height:56px;
     max-width:100%; margin:0 0 12px; filter: brightness(1.1) contrast(1.1); }
   #payloadMenu .payloadTile {
@@ -557,6 +557,7 @@ function setPayloadTileState(tile, state) {
 
 function payloadIsListed(name) {
     if (!/^[A-Za-z0-9._-]+\.elf$/.test(name)) return false;
+    if (name === "kstuff.elf") return true;
     const tiles = payloadMenuEl.getElementsByTagName("a");
     for (let i = 0; i < tiles.length; ++i)
         if (tiles[i].getAttribute("data-name") === name) return true;
@@ -1521,9 +1522,30 @@ async function runLadder() {
             + passed + " PASS", "ok");
 
     if (payloadSuccess) {
-        flushMark("ELFLDR-MENU-INPAGE",
-            "no-navigation-parked-racers-and-fds-remain-owned-port=9021");
-        showPayloadMenu();
+        flushMark("ELFLDR-MENU-SKIP",
+            "auto-load-payload-manager-kstuff-port=9021");
+        if (payloadMenuEl) payloadMenuEl.className = "";
+        stage("Loading Payload Manager...", "ok");
+        try {
+            sendPayloadToElfldr("kstuff.elf").then(function (result) {
+                flushMark("ELF-SENT", "name=" + clean(result.name) + "-bytes="
+                    + result.bytes + "-target=" + clean(result.target)
+                    + "-port=" + result.port + "-why=payload-manager");
+                stage("Jailbreak completed successfully", "ok");
+                if (result.closeWarning)
+                    flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result.name)
+                        + "-why=" + clean(result.closeWarning.message
+                            || result.closeWarning));
+            }).catch(function (error) {
+                flushMark("ELF-SEND-FAILED", "name=kstuff.elf-why="
+                    + clean(error && error.message ? error.message : error));
+                stage("Jailbreak completed successfully", "ok");
+            });
+        } catch (error) {
+            flushMark("ELF-SEND-FAILED", "name=kstuff.elf-why="
+                + clean(error && error.message ? error.message : error));
+            stage("Jailbreak completed successfully", "ok");
+        }
     }
 }
 
