@@ -20,13 +20,12 @@ Supported firmwares: about **9.00–12.00**.
 
 ## WebKit Autoloader (homescreen icon)
 
-After a successful jailbreak, you can install [PLK WebKit Autoloader](https://github.com/itsPLK/ps5-webkit-autoloader) so the next boots use a homescreen app instead of typing a URL.
+After a successful jailbreak, install the **SLOPKIT** homescreen app from [SLOPKIT-WebKit-Autoloader](https://github.com/X-F1REBALL-X/SLOPKIT-WebKit-Autoloader) (based on [itsPLK/ps5-webkit-autoloader](https://github.com/itsPLK/ps5-webkit-autoloader)).
 
-1. Jailbreak once with this site (browser).
+1. Jailbreak once with this host.
 2. In Payload Manager, send `payloads/webkit-autoloader-installer.elf` (or load it via elfldr on port 9021).
 3. Reboot once.
-4. Open **WebKit Autoloader** from the PS5 homescreen.
+4. Open **SLOPKIT WebKit** from the PS5 homescreen.
 
-After a successful jailbreak, this host also auto-sends `payload-manager.elf` and then `webkit-autoloader-installer.elf` via elfldr.
+After a successful jailbreak, this host also auto-sends `payload-manager.elf` and then the branded `webkit-autoloader-installer.elf` via elfldr.
 
-Note: Autoloader uses PLK's built-in exploit host, not this site's custom UI.
