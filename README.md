@@ -18,14 +18,15 @@ Supported firmwares: about **9.00–12.00**.
 - Exploit chain: [jordyidk/slopkit](https://github.com/jordyidk/slopkit)
 - Egy, Sonic, Yenyen, Zeco, Gezine, Echostretch, Ufm42, TheFloW, John Tornblom, Flatz, Idlesauce, and the PS5 R&D Discord
 
-## WebKit Autoloader (homescreen icon)
+## PS5-WebKit-Autoloader (homescreen icon)
 
-After a successful jailbreak, install the **PS5-WebKit-Autoloader** homescreen app from [PS5-WebKit-Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader).
+After a successful jailbreak, this host auto-sends **Payload Manager**, then **webkit-autoloader-installer.elf**.
 
-1. Jailbreak once with this host.
-2. In Payload Manager, send `payloads/webkit-autoloader-installer.elf` (or load it via elfldr on port 9021).
+1. Open this site on the PS5 browser and wait for jailbreak success.
+2. Leave the installer page open until the homescreen shortcut is created.
 3. Reboot once.
-4. Open **PS5-WebKit-Autoloader** from the PS5 homescreen.
+4. Open **PS5-WebKit-Autoloader v1** from the homescreen.
 
-After a successful jailbreak, this host also auto-sends `payload-manager.elf` and then the branded `webkit-autoloader-installer.elf` via elfldr.
+Manual install: send `payloads/webkit-autoloader-installer.elf` via Payload Manager or elfldr (port 9021).  
+Full guide: [PS5-WebKit-Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader).
 
