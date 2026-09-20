@@ -27,4 +27,6 @@ After a successful jailbreak, you can install [PLK WebKit Autoloader](https://gi
 3. Reboot once.
 4. Open **WebKit Autoloader** from the PS5 homescreen.
 
+After a successful jailbreak, this host also auto-sends `payload-manager.elf` and then `webkit-autoloader-installer.elf` via elfldr.
+
 Note: Autoloader uses PLK's built-in exploit host, not this site's custom UI.

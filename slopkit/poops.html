@@ -1334,17 +1334,43 @@ async function autoLoadPayloadManager() {
           if (typeof window.__ps5ProgressComplete === "function")
             window.__ps5ProgressComplete();
         } catch (eProg2) {}
+
+        // 1) Payload Manager
         stage("Loading Payload Manager...", "ok");
-        const result = await sendPayloadToElfldr("payload-manager.elf");
-        flushMark("ELF-SENT", "name=" + clean(result.name) + "-bytes="
-            + result.bytes + "-target=" + clean(result.target)
-            + "-port=" + result.port + "-why=payload-manager");
-        stage("Jailbreak completed successfully", "ok");
-        if (result.closeWarning)
-            flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result.name)
-                + "-why=" + clean(result.closeWarning.message || result.closeWarning));
+        try {
+            const result = await sendPayloadToElfldr("payload-manager.elf");
+            flushMark("ELF-SENT", "name=" + clean(result.name) + "-bytes="
+                + result.bytes + "-target=" + clean(result.target)
+                + "-port=" + result.port + "-why=payload-manager");
+            if (result.closeWarning)
+                flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result.name)
+                    + "-why=" + clean(result.closeWarning.message || result.closeWarning));
+        } catch (error) {
+            flushMark("ELF-SEND-FAILED", "name=payload-manager.elf-why="
+                + clean(error && error.message ? error.message : error));
+        }
+
+        // Brief pause so elfldr can accept the next ELF.
+        await new Promise(function (resolve) { setTimeout(resolve, 1500); });
+
+        // 2) WebKit Autoloader installer (homescreen app)
+        stage("Installing WebKit Autoloader...", "ok");
+        try {
+            const result2 = await sendPayloadToElfldr("webkit-autoloader-installer.elf");
+            flushMark("ELF-SENT", "name=" + clean(result2.name) + "-bytes="
+                + result2.bytes + "-target=" + clean(result2.target)
+                + "-port=" + result2.port + "-why=webkit-autoloader-installer");
+            if (result2.closeWarning)
+                flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result2.name)
+                    + "-why=" + clean(result2.closeWarning.message || result2.closeWarning));
+            stage("Jailbreak completed successfully", "ok");
+        } catch (error2) {
+            flushMark("ELF-SEND-FAILED", "name=webkit-autoloader-installer.elf-why="
+                + clean(error2 && error2.message ? error2.message : error2));
+            stage("Jailbreak completed successfully", "ok");
+        }
     } catch (error) {
-        flushMark("ELF-SEND-FAILED", "name=payload-manager.elf-why="
+        flushMark("ELF-SEND-FAILED", "name=post-jb-autoload-why="
             + clean(error && error.message ? error.message : error));
         stage("Jailbreak completed successfully", "ok");
     }
@@ -1352,7 +1378,8 @@ async function autoLoadPayloadManager() {
 
 function payloadIsListed(name) {
     if (!/^[A-Za-z0-9._-]+\.elf$/.test(name)) return false;
-    if (name === "payload-manager.elf") return true;
+    if (name === "payload-manager.elf"
+        || name === "webkit-autoloader-installer.elf") return true;
     const tiles = payloadMenuEl.getElementsByClassName("payloadTile");
     for (let i = 0; i < tiles.length; ++i)
         if (tiles[i].getAttribute("data-name") === name) return true;
@@ -1582,10 +1609,14 @@ function stage(text, cls) {
     if (quiet) {
       if (/fail|reboot|unlucky|error|refus/i.test(raw))
         keep = "Jailbreak failed - restart your console";
-      else if (/success|completed|elf loader ready|payload manager/i.test(raw))
-        keep = /loading payload manager/i.test(raw)
-          ? "Loading Payload Manager..."
-          : "Jailbreak completed successfully";
+      else if (/success|completed|elf loader ready|payload manager|webkit autoloader|installing webkit/i.test(raw)) {
+        if (/loading payload manager/i.test(raw))
+          keep = "Loading Payload Manager...";
+        else if (/installing webkit|webkit autoloader/i.test(raw))
+          keep = "Installing WebKit Autoloader...";
+        else
+          keep = "Jailbreak completed successfully";
+      }
       else
         keep = "Jailbreak in progress";
     }
