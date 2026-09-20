@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SLOPKIT — PS5 jailbreak</title>
-<meta http-equiv="refresh" content="0;url=slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=final">
 <link rel="preload" href="slopkit/ps5-hero.jpg" as="image">
 <style>
   html, body {
@@ -76,6 +75,11 @@
     font-weight: 600;
     letter-spacing: 0.06em;
   }
+  #status.blocked,
+  #fwMeta.blocked {
+    color: #ff6473;
+    text-shadow: 0 0 12px rgba(255,100,115,0.35);
+  }
   #foot {
     position: fixed;
     left: 0; right: 0; bottom: 10px;
@@ -101,16 +105,28 @@
 <div id="foot"><b>Created by X-F1REBALL-X</b></div>
 <script>
 (function () {
-  try {
-    var m = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent || "");
-    var fw = m ? m[1] : "";
-    var el = document.getElementById("fwMeta");
-    if (el) el.textContent = fw ? ("FW " + fw + " · chain poops") : "FW —";
-  } catch (e) {}
-})();
-</script>
-<script>
-(function () {
+  var ua = navigator.userAgent || "";
+  var m = /PlayStation 5\/(\d+\.\d+)/.exec(ua);
+  var isPs5 = !!m;
+  var fw = m ? m[1] : "";
+  var meta = document.getElementById("fwMeta");
+  var status = document.getElementById("status");
+
+  if (!isPs5) {
+    if (meta) {
+      meta.textContent = "Unsupported device";
+      meta.className = "blocked";
+    }
+    if (status) {
+      status.textContent = "This won't work on this device";
+      status.className = "blocked";
+    }
+    return;
+  }
+
+  if (meta) meta.textContent = "FW " + fw + " · chain poops";
+  if (status) status.textContent = "Starting...";
+
   var target = "slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=final";
   try {
     location.replace(target);

@@ -1,6 +1,17 @@
 if (!navigator.userAgent.includes('PlayStation 5')) {
-    alert(`This is a PlayStation 5 Exploit. => ${navigator.userAgent}`);
-    throw new Error("");
+    try {
+        document.body && document.body.classList.add("device-blocked");
+        var meta = document.getElementById("fwMeta");
+        if (meta) meta.textContent = "Unsupported device";
+        var stage = document.getElementById("stage");
+        if (stage) stage.textContent = "This won't work on this device";
+        var fail = document.getElementById("failureMessage");
+        if (fail) {
+            fail.textContent = "Open this page on a PS5 browser";
+            fail.className = "on";
+        }
+    } catch (e) {}
+    throw new Error("unsupported device");
 }
 
 const supportedFirmwares = [

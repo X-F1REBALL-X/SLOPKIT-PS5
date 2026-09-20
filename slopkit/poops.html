@@ -459,6 +459,25 @@
   }
   #slopkitFooter b { color:#2a9fff; font-weight:600; }
   #slopkitHeader { text-align: center; }
+
+  body.device-blocked #stage {
+    color: #ff6473 !important;
+    text-shadow: 0 0 14px rgba(255,100,115,0.35) !important;
+  }
+  body.device-blocked #fwMeta,
+  body.device-blocked #slopkitHeader .fw-meta {
+    color: #ff8a96 !important;
+  }
+  body.device-blocked #progress-wrap,
+  body.device-blocked #progress-pct {
+    display: none !important;
+  }
+  body.device-blocked #failureMessage {
+    display: block !important;
+    color: #ff6473 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+  }
   #failureMessage {
     color: #2a9fff !important; font-size: 18px !important;
     letter-spacing: .04em !important; text-transform: none !important;
@@ -531,35 +550,64 @@
 
 <script>
 (function () {
-  function paint() {
-    var fw = "";
-    try {
-      var m = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent || "");
-      fw = m ? m[1] : "";
-    } catch (e) {}
+  var ua = navigator.userAgent || "";
+  var m = /PlayStation 5\/(\d+\.\d+)/.exec(ua);
+  var isPs5 = !!m;
+  window.__SLOPKIT_IS_PS5__ = isPs5;
+  window.__SLOPKIT_BLOCKED__ = !isPs5;
+
+  function paintOk(fw) {
     var meta = document.getElementById("fwMeta");
     if (meta) meta.textContent = fw ? ("FW " + fw + " · chain poops") : "FW —";
     var lab = document.getElementById("currentFirmware");
     if (lab && fw) lab.textContent = fw;
   }
-  paint();
-  setTimeout(paint, 50);
-  setTimeout(paint, 500);
+
+  function paintBlocked() {
+    try {
+      document.body.classList.add("device-blocked");
+      // Disarm exploit URL so the page never auto-runs.
+      if (location.search && /(?:^|[?&])go=1(?:&|$)/.test(location.search)) {
+        history.replaceState(null, "", location.pathname + location.hash);
+      }
+    } catch (e) {}
+    var meta = document.getElementById("fwMeta");
+    if (meta) meta.textContent = "Unsupported device";
+    var lab = document.getElementById("currentFirmware");
+    if (lab) lab.textContent = "unsupported";
+    var stage = document.getElementById("stage");
+    if (stage) stage.textContent = "This won't work on this device";
+    var fail = document.getElementById("failureMessage");
+    if (fail) {
+      fail.textContent = "Open this page on a PS5 browser";
+      fail.className = "on";
+    }
+    var pct = document.getElementById("progress-pct");
+    if (pct) pct.textContent = "";
+  }
+
+  if (!isPs5) {
+    paintBlocked();
+    return;
+  }
+
+  paintOk(m[1]);
+  setTimeout(function () { paintOk(window.fw_str || m[1]); }, 50);
+  setTimeout(function () { paintOk(window.fw_str || m[1]); }, 500);
 })();
 </script>
-<script src="rop.js?v=final"></script>
-<script src="main.js?v=final"></script>
-<script>window.offsetsReady = new Promise(function (res, rej) {
-    var s = document.querySelector('script[src^="../offsets/"]');
-    if (!s) return rej(new Error("offsets script was never injected by main.js"));
-    if (typeof OFFSET_wk_vtable_first_element !== "undefined") return res(s.src);
-    s.addEventListener("load", function () { res(s.src); });
-    s.addEventListener("error", function () {
-        rej(new Error("offsets 404: " + s.src));
-    });
-});
+<script>
+(function () {
+  if (window.__SLOPKIT_BLOCKED__) {
+    window.offsetsReady = Promise.reject(new Error("unsupported device"));
+    return;
+  }
+  document.write('<script src="rop.js?v=final"><\/script>');
+  document.write('<script src="main.js?v=final"><\/script>');
+  document.write('<script>window.offsetsReady=new Promise(function(res,rej){var s=document.querySelector(\'script[src^="../offsets/"]\');if(!s)return rej(new Error("offsets script was never injected by main.js"));if(typeof OFFSET_wk_vtable_first_element!=="undefined")return res(s.src);s.addEventListener("load",function(){res(s.src);});s.addEventListener("error",function(){rej(new Error("offsets 404: "+s.src));});});<\/script>');
+  document.write('<script src="syscalls.js"><\/script>');
+})();
 </script>
-<script src="syscalls.js"></script>
 
 <script type="module">import { establishPrimitive, fakeCellReleased } from "./core.js?v=final";
 import { installWindowP, pairStatus } from "./mem.js?v=final";
@@ -612,6 +660,10 @@ async function loadPoopsModules() {
 }
 
 const Q = new URLSearchParams(location.search);
+if (window.__SLOPKIT_BLOCKED__) {
+    // Non-PS5: stay idle, UI already painted.
+    throw new Error("unsupported device");
+}
 const LOG_DEBUG = Q.get("log") === "debug";
 const ARMED = Q.get("go") === "1";
 const CLEARLATCH = Q.get("clear") === "1";
