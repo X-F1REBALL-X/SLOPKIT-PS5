@@ -2361,10 +2361,11 @@ async function runLadder() {
     else
         stage("Jailbreak completed successfully", "ok");
 
+    // Payload Manager is already sent once from STAGE5-DONE / elfldr-reuse.
+    // Do not send payload-manager.elf a second time here.
     if (payloadSuccess) {
         flushMark("ELFLDR-MENU-SKIP",
-            "auto-load-payload-manager-elf-port=9021");
-        autoLoadPayloadManager();
+            "payload-manager-already-requested-port=9021");
     }
 }
 
