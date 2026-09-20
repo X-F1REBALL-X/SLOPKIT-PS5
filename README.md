@@ -20,7 +20,7 @@ Supported firmwares: about **9.00–12.00**.
 
 ## WebKit Autoloader (homescreen icon)
 
-After a successful jailbreak, install the **SLOPKIT** homescreen app from [SLOPKIT-WebKit-Autoloader](https://github.com/X-F1REBALL-X/SLOPKIT-WebKit-Autoloader) (based on [itsPLK/ps5-webkit-autoloader](https://github.com/itsPLK/ps5-webkit-autoloader)).
+After a successful jailbreak, install the **SLOPKIT** homescreen app from [SLOPKIT-WebKit-Autoloader](https://github.com/X-F1REBALL-X/SLOPKIT-WebKit-Autoloader).
 
 1. Jailbreak once with this host.
 2. In Payload Manager, send `payloads/webkit-autoloader-installer.elf` (or load it via elfldr on port 9021).
