@@ -973,6 +973,12 @@ function screenMark(tag, extra) {
     if (tag === "STAGE5-DONE" && /(?:^|-)joinRet=0(?:-|$)/.test(s0) &&
         /(?:^|-)shellcodeRet=0x0+(?:-|$)/.test(s0)) {
         elfldrSpawned = true;
+        try { window.elfldrSpawned = true; } catch (eReady) {}
+        try {
+          window.__ps5JailbreakDone = true;
+          if (typeof window.__ps5ProgressComplete === "function")
+            window.__ps5ProgressComplete();
+        } catch (eProg) {}
         clearFailureBanners();
         setCatResult(true);
         showVerdict(false, "Jailbreak completed successfully");
@@ -1251,10 +1257,16 @@ async function probeExistingElfLoader() {
 
 function openExistingPayloadMenu() {
     elfldrSpawned = true;
+    try { window.elfldrSpawned = true; } catch (eReady) {}
+    try {
+      window.__ps5JailbreakDone = true;
+      if (typeof window.__ps5ProgressComplete === "function")
+        window.__ps5ProgressComplete();
+    } catch (eProg) {}
     clearFailureBanners();
     setCatResult(true);
-    showVerdict(false, "ELF LOADER ALREADY READY ON PORT 9021");
-    stage("ELF LOADER READY -- opening payload menu", "ok");
+    showVerdict(false, "Jailbreak completed successfully");
+    stage("Jailbreak completed successfully", "ok");
     /* showPayloadMenu skipped */ autoLoadPayloadManager();
     flushMark("ELFLDR-REUSED", "bind-probe-found-127.0.0.1-port=9021-owned");
 }
@@ -1317,6 +1329,11 @@ async function autoLoadPayloadManager() {
             payloadMenuEl.classList.remove("on");
             payloadMenuEl.classList.remove("selected");
         }
+        try {
+          window.__ps5JailbreakDone = true;
+          if (typeof window.__ps5ProgressComplete === "function")
+            window.__ps5ProgressComplete();
+        } catch (eProg2) {}
         stage("Loading Payload Manager...", "ok");
         const result = await sendPayloadToElfldr("payload-manager.elf");
         flushMark("ELF-SENT", "name=" + clean(result.name) + "-bytes="
@@ -2808,6 +2825,7 @@ function lastRunText() {
   var bar = document.getElementById("progress-bar");
   var pct = document.getElementById("progress-pct");
   var wrap = document.getElementById("progress-wrap");
+  var stageEl = document.getElementById("stage");
   if (!bar || !pct) return;
   var value = 0;
   var finished = false;
@@ -2823,6 +2841,7 @@ function lastRunText() {
     if (finished) return;
     finished = true;
     try { clearInterval(timer); } catch (e) {}
+    // Set 100% immediately — WebKit may stall timers after the exploit.
     paint(100);
     if (wrap) wrap.style.display = "block";
     if (pct) pct.style.display = "block";
@@ -2830,14 +2849,23 @@ function lastRunText() {
   window.__ps5ProgressComplete = complete;
   var timer = setInterval(function () {
     if (finished) return;
-    if (document.body.classList.contains("done") || window.__ps5JailbreakDone) {
+    if (window.__ps5JailbreakDone || window.elfldrSpawned) {
       complete();
       return;
     }
     var sec = (Date.now() - t0) / 1000;
-    var target = 96 * (1 - Math.exp(-sec / 2.2));
+    // Slow fill: ~60% by ~20s, ~80% by ~45s, soft-cap ~90% until real success.
+    var target = 90 * (1 - Math.exp(-sec / 14));
     if (target > value) paint(target);
-  }, 50);
+    // If nothing finished after 3 minutes, surface a failure instead of hanging.
+    if (sec > 180 && stageEl) {
+      stageEl.textContent = "Jailbreak failed - restart your console";
+      stageEl.className = "bad";
+      paint(100);
+      finished = true;
+      try { clearInterval(timer); } catch (e2) {}
+    }
+  }, 80);
 })();
 </script>
 </body>
