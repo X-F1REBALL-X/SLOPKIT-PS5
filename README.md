@@ -25,6 +25,10 @@ Host UI by **X-F1REBALL-X**.
 
 Egy, Sonic, Yenyen, Zeco, Gezine, Echostretch, Ufm42, TheFloW, John Tornblom, Flatz, and the PS5 R&D Discord.
 
+## Upstream
+
+Exploit chain synced from [jordyidk/slopkit](https://github.com/jordyidk/slopkit); UI branding is custom.
+
 ## Note
 
 This repository is a themed host UI and packaging of community PS5 homebrew tooling. It is intended for use on hardware you own. It does not document exploit internals or step-by-step jailbreak procedures.
