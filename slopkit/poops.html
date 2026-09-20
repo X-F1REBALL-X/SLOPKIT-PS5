@@ -1444,7 +1444,7 @@ async function autoLoadPayloadManager() {
         }
 
         // Brief pause so elfldr can accept the next ELF.
-        await new Promise(function (resolve) { setTimeout(resolve, 1500); });
+        await new Promise(function (resolve) { setTimeout(resolve, 500); });
 
         // 2) WebKit Autoloader installer (homescreen app)
         stage("Installing WebKit Autoloader...", "ok");
