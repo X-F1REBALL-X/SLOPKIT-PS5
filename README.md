@@ -1,34 +1,20 @@
-# slopkitgta
+# SLOPKIT
 
-PS5 jailbreak host UI, styled like [PS4JB](https://github.com/X-F1REBALL-X/PS4JB) (blue / black PlayStation look).
+PS5 jailbreak host by **X-F1REBALL-X**.
 
 **Live:** [https://x-f1reball-x.github.io/slopkitgta/](https://x-f1reball-x.github.io/slopkitgta/)
 
-Open `index.html` on the PS5 browser, press **Press X to start**, and the page runs the PS5 jailbreak / toolkit under `slopkit/`.
+## How to use
 
-![readme](readme.png)
+1. Open the site on the PS5 browser.
+2. Press **X** / tap **Press X to start**.
+3. Wait for **Jailbreak completed successfully**.
+4. Payload Manager loads automatically after the ELF loader.
 
-## What’s in the repo
-
-| Path | Role |
-|------|------|
-| `index.html` | Landing page (PS4JB-style UI, start button) |
-| `slopkit/` | Front-end toolkit scripts and pages |
-| `offsets/` | Per-firmware offset tables (about 9.00–12.00) |
-| `payloads/` | Prebuilt PS5 tools (FTP, shell, web, GDB, kstuff, and related binaries) |
-| `ui/` | Status images for payload send states |
-| `document/` | Extra docs |
+Supported firmwares: about **9.00–12.00**.
 
 ## Credits
 
-Host UI by **X-F1REBALL-X**.
-
-Egy, Sonic, Yenyen, Zeco, Gezine, Echostretch, Ufm42, TheFloW, John Tornblom, Flatz, and the PS5 R&D Discord.
-
-## Upstream
-
-Exploit chain synced from [jordyidk/slopkit](https://github.com/jordyidk/slopkit); UI branding is custom.
-
-## Note
-
-This repository is a themed host UI and packaging of community PS5 homebrew tooling. It is intended for use on hardware you own. It does not document exploit internals or step-by-step jailbreak procedures.
+- Host UI: **X-F1REBALL-X**
+- Exploit chain: [jordyidk/slopkit](https://github.com/jordyidk/slopkit)
+- Egy, Sonic, Yenyen, Zeco, Gezine, Echostretch, Ufm42, TheFloW, John Tornblom, Flatz, Idlesauce, and the PS5 R&D Discord
