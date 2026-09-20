@@ -1,8 +1,10 @@
 # slopkitgta
 
-GTA / Los Santos–themed web UI that hosts a PS5 homebrew toolkit.
+PS5 homebrew toolkit host UI, styled like [PS4JB](https://github.com/X-F1REBALL-X/PS4JB) (blue / black PlayStation look).
 
-Open `index.html`, hit **START MISSION**, and the page loads the toolkit under `slopkit/`.
+**Live:** [https://x-f1reball-x.github.io/slopkitgta/](https://x-f1reball-x.github.io/slopkitgta/)
+
+Open `index.html`, press **Press X to start**, and the page loads the toolkit under `slopkit/`.
 
 ![readme](readme.png)
 
@@ -10,7 +12,7 @@ Open `index.html`, hit **START MISSION**, and the page loads the toolkit under `
 
 | Path | Role |
 |------|------|
-| `index.html` | Landing page (Los Santos styling, start button) |
+| `index.html` | Landing page (PS4JB-style UI, start button) |
 | `slopkit/` | Front-end toolkit scripts and pages |
 | `offsets/` | Per-firmware offset tables (about 9.00–12.00) |
 | `payloads/` | Prebuilt PS5 tools (FTP, shell, web, GDB, kstuff, and related binaries) |
@@ -18,6 +20,8 @@ Open `index.html`, hit **START MISSION**, and the page loads the toolkit under `
 | `document/` | Extra docs |
 
 ## Credits
+
+Host UI by **X-F1REBALL-X**.
 
 Egy, Sonic, Yenyen, Zeco, Gezine, Echostretch, Ufm42, TheFloW, John Tornblom, Flatz, and the PS5 R&D Discord.
 

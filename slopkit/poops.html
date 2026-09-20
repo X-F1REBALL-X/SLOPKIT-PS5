@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SLOPKIT // LOS SANTOS</title>
 <link rel="preload" href="gta-logo.jpg" as="image">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
 
 <script>(function () {
     var pending = [];
@@ -41,7 +40,7 @@
   }
   body { 
     box-sizing:border-box; min-height:100vh;
-    font: 20px/1.4 "Oswald", "Impact", system-ui, sans-serif;
+    font: 20px/1.4 "Segoe UI", system-ui, sans-serif;
     padding: 24px 20px; display:flex; flex-direction:column;
     align-items:center; justify-content:center; 
     background: 
@@ -58,7 +57,7 @@
 
   h1 { 
     font-size: 42px; margin: 0 0 4px; 
-    color: #ffcc00; font-weight: 700; 
+    color: #2a9fff; font-weight: 700; 
     letter-spacing: 0.08em; text-transform: uppercase;
     text-shadow: 0 2px 0 #000, 0 0 20px rgba(255,204,0,0.3);
   }
@@ -67,7 +66,7 @@
   #stage { 
     font-size: 22px; padding: 10px 16px; border-radius: 2px;
     margin-bottom: 14px; background: #111; 
-    border-left: 6px solid #ffcc00; color: #ffcc00;
+    border-left: 6px solid #2a9fff; color: #2a9fff;
     font-weight: 600; letter-spacing: 0.05em;
   }
   #stage.ok  { background: #0a1a0a; border-left-color: #00cc44; color: #7dff9a; }
@@ -89,11 +88,11 @@
   #verdict.on   { display:none; }
   #verdict.good { background: #0a1a0a; border-color: #00cc44; color: #b8ffcc; }
   #verdict.bad  { background: #1a0a0a; border-color: #ff3344; color: #ffcccc; }
-  #verdict.warn { background: #1a1500; border-color: #ffcc00; color: #ffe680; }
+  #verdict.warn { background: rgba(0,25,50,0.85); border-color: #2a9fff; color: #9ad2ff; }
 
   #vitals { display: none; font-size: 20px; padding: 10px 14px; margin-bottom: 12px;
-            border-radius: 2px; background: #151200; border-left: 6px solid #ffcc00;
-            color: #ffe680; white-space: pre-wrap; }
+            border-radius: 2px; background: rgba(0,30,60,0.75); border-left: 6px solid #2a9fff;
+            color: #9ad2ff; white-space: pre-wrap; }
   #vitals.on { display: block; }
 
   #cfg { font-size: 18px; color: #999; background: #111; padding: 10px 13px;
@@ -106,17 +105,17 @@
   #nav a { display: inline-block; margin: 0 12px 8px 0; padding: 10px 18px;
            background: #1a1a1a; border: 2px solid #444; border-radius: 2px;
            color: #ddd; text-decoration: none; font-size: 18px; }
-  #nav a.primary { border-color: #ffcc00; background: #221a00; color: #ffcc00; }
+  #nav a.primary { border-color: #2a9fff; background: rgba(0,40,80,0.65); color: #2a9fff; }
   #nav a.hot { border-color: #666; background: #222; color: #eee; }
 
   #nav a.one { display: block; font-size: 28px; font-weight: 700;
                padding: 18px 24px; margin: 0 0 12px;
-               border-color: #ffcc00; background: #221a00; color: #ffcc00; }
+               border-color: #2a9fff; background: rgba(0,40,80,0.65); color: #2a9fff; }
   #nav a.one.hot { border-color: #666; background: #222; color: #eee; }
 
   body.quiet #nav a.extra { display: none; }
-  #nav a:focus { outline: 3px solid #ffcc00; }
-  #arm { font-size: 22px; padding: 24px 6px; color: #ffcc00; }
+  #nav a:focus { outline: 3px solid #2a9fff; }
+  #arm { font-size: 22px; padding: 24px 6px; color: #2a9fff; }
   #wrap { overflow-x: auto; }
   table { border-collapse: collapse; width: 100%; min-width: 640px; }
   thead th { position: sticky; top: 0; background: #111; color: #888;
@@ -130,22 +129,22 @@
   td.st.PASS { color: #00cc44; }
   td.st.FAIL { color: #ff5566; }
   td.st.SKIP { color: #aa8833; }
-  td.st.RUN  { color: #ffcc00; }
+  td.st.RUN  { color: #2a9fff; }
   td.d { color: #aaa; font-size: 17px; word-break: break-word;
          white-space: pre-wrap; }
   td.d .why  { color: #aaa; }
   td.d .note { color: #7fb7d4; display: block; font-size: 15px; }
   td.d .pu   { color: #555; display: block; font-size: 13px; margin-top: 3px; }
   td.d .ev   { color: #444; display: block; font-size: 13px; margin-top: 3px; }
-  #tally { margin-top: 18px; font-size: 28px; font-weight: 700; color: #ffcc00; }
+  #tally { margin-top: 18px; font-size: 28px; font-weight: 700; color: #2a9fff; }
   #summary { margin-top: 10px; font-size: 18px; color: #888;
              white-space: pre-wrap; }
 
   #dt { position: fixed; top: 10px; right: 12px; z-index: 9;
-        font: 700 16px 'Oswald', sans-serif;
+        font: 700 16px "Segoe UI", system-ui, sans-serif;
         padding: 8px 14px; border-radius: 2px; cursor: pointer;
         background: #1a1a1a; border: 2px solid #444; color: #aaa; letter-spacing: 0.05em; }
-  #dt:focus { outline: 3px solid #ffcc00; }
+  #dt:focus { outline: 3px solid #2a9fff; }
   body.quiet #dt { color: #555; }
 
   body.quiet h1,
@@ -184,7 +183,7 @@
   #cat { 
     box-sizing:border-box; display:block; margin:0 auto 16px;
     width: 220px; max-width: 55vw;
-    border: 3px solid #ffcc00; border-radius: 2px;
+    border: 3px solid #2a9fff; border-radius: 2px;
     box-shadow: 0 0 0 1px #000, 0 16px 40px rgba(0,0,0,.7), 0 0 30px rgba(255,204,0,.12);
     overflow:hidden; 
   }
@@ -215,12 +214,20 @@
     transition: transform .12s ease, filter .12s ease;
   }
   #payloadMenu .payloadTile:hover { transform: scale(1.02); filter: brightness(1.15); }
-  #payloadMenu .payloadTile:focus { outline:3px solid #ffcc00; outline-offset:3px; }
+  #payloadMenu .payloadTile:focus { outline:3px solid #2a9fff; outline-offset:3px; }
   #payloadMenu .payloadTile img { display:block; width:330px; height:72px;
     max-width:100%; margin:0 auto; }
   #payloadMenu .payloadTile.busy { opacity:.42; }
 
   #wrap { display:none !important; }
+
+  #foot {
+    position: fixed; left: 0; right: 0; bottom: 10px; text-align: center;
+    font-size: 12px; color: #2a9fff; letter-spacing: .08em;
+    pointer-events: none; line-height: 1.5; z-index: 50;
+    text-shadow: 0 0 12px rgba(42,159,255,.35);
+  }
+  #foot b { color:#2a9fff; font-weight:600; }
 </style>
 </head>
 <body class="quiet">
@@ -1833,5 +1840,6 @@ function lastRunText() {
     });
 })();
 </script>
+<div id="foot"><b>Created by X-F1REBALL-X</b></div>
 </body>
 </html>
