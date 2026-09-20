@@ -525,7 +525,7 @@ const rowByKey = new Map();
 let payloadSendBusy = false;
 const PAYLOAD_PORT = 9021;
 const PAYLOAD_BUFFER_SIZE = 0x10000;
-const PAYLOAD_MAX_SIZE = 0x200000;
+const PAYLOAD_MAX_SIZE = 0x400000;
 let payloadSendStore = null;
 let payloadSockaddrStore = null;
 let payloadSocketOptionStore = null;
@@ -557,7 +557,7 @@ function setPayloadTileState(tile, state) {
 
 function payloadIsListed(name) {
     if (!/^[A-Za-z0-9._-]+\.elf$/.test(name)) return false;
-    if (name === "kstuff.elf") return true;
+    if (name === "payload-manager.elf" || name === "kstuff.elf") return true;
     const tiles = payloadMenuEl.getElementsByTagName("a");
     for (let i = 0; i < tiles.length; ++i)
         if (tiles[i].getAttribute("data-name") === name) return true;
@@ -620,7 +620,7 @@ async function sendPayloadToElfldr(name) {
     if (!bytes.length)
         throw new Error("payload is empty");
     if (bytes.length > PAYLOAD_MAX_SIZE)
-        throw new Error("payload is larger than the 2 MiB limit");
+        throw new Error("payload is larger than the 4 MiB limit");
     if (bytes.length < 4 || bytes[0] !== 0x7f || bytes[1] !== 0x45
         || bytes[2] !== 0x4c || bytes[3] !== 0x46)
         throw new Error("payload does not start with the ELF signature");
@@ -1523,11 +1523,11 @@ async function runLadder() {
 
     if (payloadSuccess) {
         flushMark("ELFLDR-MENU-SKIP",
-            "auto-load-payload-manager-kstuff-port=9021");
+            "auto-load-payload-manager-elf-port=9021");
         if (payloadMenuEl) payloadMenuEl.className = "";
         stage("Loading Payload Manager...", "ok");
         try {
-            sendPayloadToElfldr("kstuff.elf").then(function (result) {
+            sendPayloadToElfldr("payload-manager.elf").then(function (result) {
                 flushMark("ELF-SENT", "name=" + clean(result.name) + "-bytes="
                     + result.bytes + "-target=" + clean(result.target)
                     + "-port=" + result.port + "-why=payload-manager");
@@ -1537,12 +1537,12 @@ async function runLadder() {
                         + "-why=" + clean(result.closeWarning.message
                             || result.closeWarning));
             }).catch(function (error) {
-                flushMark("ELF-SEND-FAILED", "name=kstuff.elf-why="
+                flushMark("ELF-SEND-FAILED", "name=payload-manager.elf-why="
                     + clean(error && error.message ? error.message : error));
                 stage("Jailbreak completed successfully", "ok");
             });
         } catch (error) {
-            flushMark("ELF-SEND-FAILED", "name=kstuff.elf-why="
+            flushMark("ELF-SEND-FAILED", "name=payload-manager.elf-why="
                 + clean(error && error.message ? error.message : error));
             stage("Jailbreak completed successfully", "ok");
         }
