@@ -20,12 +20,12 @@ Supported firmwares: about **9.00–12.00**.
 
 ## WebKit Autoloader (homescreen icon)
 
-After a successful jailbreak, install the **PS5 WebKit Autoloader** homescreen app from [PS5-WebKit-Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader).
+After a successful jailbreak, install the **PS5-WebKit-Autoloader** homescreen app from [PS5-WebKit-Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader).
 
 1. Jailbreak once with this host.
 2. In Payload Manager, send `payloads/webkit-autoloader-installer.elf` (or load it via elfldr on port 9021).
 3. Reboot once.
-4. Open **PS5 WebKit Autoloader** from the PS5 homescreen.
+4. Open **PS5-WebKit-Autoloader** from the PS5 homescreen.
 
 After a successful jailbreak, this host also auto-sends `payload-manager.elf` and then the branded `webkit-autoloader-installer.elf` via elfldr.
 
