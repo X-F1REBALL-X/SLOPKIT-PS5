@@ -137,18 +137,12 @@
   body.quiet #vitals,
   body.quiet #verdict,
   body.quiet #danger,
-  body.quiet #stage,
   body.quiet td.d .pu,
   body.quiet td.d .ev                     { display: none; }
 
   body.quiet #reboot { font-size: 26px; }
 
-  body.quiet #scr {
-        box-sizing: border-box; width:88vw; max-width:680px; height:150px;
-        overflow: auto; font-size: 14px; line-height: 1.3; color: #b8c4d2;
-        background: rgba(12,18,28,.88); border: 1px solid #344258;
-        box-shadow: 0 18px 42px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.04);
-        border-radius: 14px; padding: 13px 15px; margin: 10px auto 0; }
+  body.quiet #scr { display: none !important; }
 
   body.quiet tr:not(.r-FAIL) td.d .note   { display: none; }
 
@@ -156,7 +150,6 @@
         display: -webkit-box; display: box; overflow: hidden;
         -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
 
-  body.quiet #stage { font-size: 34px; }
 
   #cat { box-sizing:border-box; display:block; margin:0 auto 12px;
          width:150px; height:150px; max-width:34vw; max-height:34vw;
@@ -330,35 +323,124 @@
   }
   .payloadToast.hide { opacity:0; }
 
-  #slopkitHeader, #slopkitFooter { display:block; }
-  body.quiet { display:grid;
-    grid-template-rows:auto 1fr auto; width:100%; height:100vh; padding:0; margin:0;
-    overflow:hidden; align-items:stretch; justify-content:stretch;
-    background:#0c0c0f; color:#fff; font-family:Arial,sans-serif; }
-  body.quiet.payload-view-active { grid-template-rows:1fr auto; }
-  body.quiet.payload-view-active #slopkitHeader { display:none; }
-  body.quiet #slopkitHeader {
-    display:block; padding:.5rem; text-align:center; }
-  body.quiet #slopkitHeader h1 {
-    display:block; margin:.5rem 0; color:#fff; font-size:2rem; font-weight:bold; }
-  body.quiet #slopkitHeader p {
-    margin:.25rem 0; color:#ccc; font-size:1rem; }
-  body.quiet #cat { display:none; }
-  body.quiet #scr { display:block;
-    box-sizing:border-box; width:auto; max-width:none; height:auto; min-height:0; flex:1;
-    margin:8px; padding:8px; overflow-y:auto; overflow-x:hidden;
-    border:1px solid #202125; border-radius:5px; background:inherit;
-    box-shadow:none; color:#fff; font:16px/1.35 monospace; white-space:pre-wrap; }
-  body.quiet #slopkitFooter {
-    display:block; padding:.5rem; color:#ccc; text-align:center; font-size:.8rem; }
-
   #wrap { display:none !important; }
-
   #payloads-view, #prompt-view { display: none !important; }
-  body.quiet #cat, body.quiet #scr, body.quiet #early, body.quiet #cfg,
-  body.quiet #tally, body.quiet #summary, body.quiet #wrap, body.quiet #dt,
-  body.quiet #arm { display: none !important; }
-  body.quiet #stage { display: block !important; font-size: 20px; color: #ffffff; }
+
+  body.quiet {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+    min-height: 100vh;
+    padding: 24px 20px 70px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background: #000 url("ps-logo.jpg") center center no-repeat !important;
+    background-size: cover !important;
+    color: #2a9fff !important;
+    font: 15px/1.45 "Segoe UI", system-ui, sans-serif !important;
+  }
+  body.quiet #slopkitHeader {
+    display: block !important;
+    padding: 0 !important;
+    text-align: center !important;
+    margin: 0 0 10px !important;
+  }
+  body.quiet #slopkitHeader h1 {
+    display: block !important;
+    margin: 0 0 8px !important;
+    color: #2a9fff !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.28em !important;
+    text-transform: uppercase !important;
+    text-shadow: 0 0 18px rgba(42,159,255,0.45) !important;
+  }
+  body.quiet #slopkitHeader .sub {
+    display: block !important;
+    margin: 0 !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.12em !important;
+  }
+  body.quiet #slopkitHeader p:not(.sub) { display: none !important; }
+  body.quiet #main-content,
+  body.quiet #console-view {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  body.quiet #cat,
+  body.quiet #scr,
+  body.quiet #early,
+  body.quiet #cfg,
+  body.quiet #tally,
+  body.quiet #summary,
+  body.quiet #wrap,
+  body.quiet #dt,
+  body.quiet #arm,
+  body.quiet #nav,
+  body.quiet #vitals,
+  body.quiet #verdict,
+  body.quiet #danger,
+  body.quiet #reboot { display: none !important; }
+
+  body.quiet #stage {
+    display: block !important;
+    font-size: 18px !important;
+    color: #ffffff !important;
+    background: transparent !important;
+    border: 0 !important;
+    margin: 8px 0 16px !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 14px rgba(255,255,255,0.4) !important;
+  }
+
+  #progress-wrap {
+    position: relative;
+    z-index: 2;
+    width: 72%;
+    max-width: 420px;
+    margin: 8px auto 8px;
+    height: 14px;
+    border-radius: 8px;
+    background: rgba(0, 40, 80, 0.55);
+    border: 1px solid rgba(42, 159, 255, 0.45);
+    overflow: hidden;
+    box-shadow: 0 0 18px rgba(42, 159, 255, 0.2);
+  }
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #1464b4, #2a9fff, #7ec8ff);
+    box-shadow: 0 0 14px rgba(42, 159, 255, 0.55);
+  }
+  #progress-pct {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #9ad2ff;
+    text-shadow: 0 0 10px rgba(42, 159, 255, 0.35);
+    margin: 0 0 10px;
+  }
+
   #slopkitFooter {
     position: fixed; left: 0; right: 0; bottom: 10px; text-align: center;
     font-size: 12px; color: #2a9fff; letter-spacing: .08em;
@@ -391,6 +473,8 @@
     <div id="verdict"></div>
     <div id="danger"></div>
     <div id="stage">Jailbreak in progress</div>
+    <div id="progress-wrap" aria-hidden="true"><div id="progress-bar"></div></div>
+    <div id="progress-pct">0%</div>
     <div id="vitals"></div>
     <div id="cfg"></div>
     <pre id="early"></pre>
@@ -1475,8 +1559,28 @@ function dismissPayloadToast(toast, delay) {
 function stage(text, cls) {
     if (cls === "bad") setCatResult(false);
     if (elfldrSpawned && cls === "bad") return;
-    stageEl.textContent = text;
+    var raw = text == null ? "" : String(text);
+    var quiet = document.body && document.body.classList.contains("quiet");
+    var keep = raw;
+    if (quiet) {
+      if (/fail|reboot|unlucky|error|refus/i.test(raw))
+        keep = "Jailbreak failed - restart your console";
+      else if (/success|completed|elf loader ready|payload manager/i.test(raw))
+        keep = /loading payload manager/i.test(raw)
+          ? "Loading Payload Manager..."
+          : "Jailbreak completed successfully";
+      else
+        keep = "Jailbreak in progress";
+    }
+    stageEl.textContent = keep;
     stageEl.className = cls || "";
+    if (quiet && /completed successfully/i.test(keep)) {
+      try {
+        window.__ps5JailbreakDone = true;
+        if (typeof window.__ps5ProgressComplete === "function")
+          window.__ps5ProgressComplete();
+      } catch (eProg) {}
+    }
 }
 function danger(text) {
     if (elfldrSpawned) return;
@@ -2696,6 +2800,44 @@ function lastRunText() {
         runInFlight = false;
         lockNav(false);
     });
+})();
+</script>
+
+<script>
+(function () {
+  var bar = document.getElementById("progress-bar");
+  var pct = document.getElementById("progress-pct");
+  var wrap = document.getElementById("progress-wrap");
+  if (!bar || !pct) return;
+  var value = 0;
+  var finished = false;
+  var t0 = Date.now();
+  function paint(v) {
+    if (v < 0) v = 0;
+    if (v > 100) v = 100;
+    value = v;
+    bar.style.width = v + "%";
+    pct.textContent = Math.floor(v) + "%";
+  }
+  function complete() {
+    if (finished) return;
+    finished = true;
+    try { clearInterval(timer); } catch (e) {}
+    paint(100);
+    if (wrap) wrap.style.display = "block";
+    if (pct) pct.style.display = "block";
+  }
+  window.__ps5ProgressComplete = complete;
+  var timer = setInterval(function () {
+    if (finished) return;
+    if (document.body.classList.contains("done") || window.__ps5JailbreakDone) {
+      complete();
+      return;
+    }
+    var sec = (Date.now() - t0) / 1000;
+    var target = 96 * (1 - Math.exp(-sec / 2.2));
+    if (target > value) paint(target);
+  }, 50);
 })();
 </script>
 </body>
