@@ -1428,6 +1428,9 @@ async function autoLoadPayloadManager() {
             window.__ps5ProgressComplete();
         } catch (eProg2) {}
 
+        // Let elfldr settle before the first ELF (avoids post-JB crashes).
+        await new Promise(function (resolve) { setTimeout(resolve, 1000); });
+
         // 1) Payload Manager
         stage("Loading Payload Manager...", "ok");
         try {
@@ -1444,7 +1447,7 @@ async function autoLoadPayloadManager() {
         }
 
         // Brief pause so elfldr can accept the next ELF.
-        await new Promise(function (resolve) { setTimeout(resolve, 500); });
+        await new Promise(function (resolve) { setTimeout(resolve, 1500); });
 
         // 2) WebKit Autoloader installer (homescreen app)
         stage("Installing WebKit Autoloader...", "ok");
