@@ -62,30 +62,11 @@
     color: #ffffff;
     text-shadow: 0 0 10px rgba(255,255,255,0.35);
   }
-  #logo {
-    display: none;
-  }
-  #start {
-    display: inline-block;
-    margin: 10px auto 0;
-    padding: 16px 28px;
-    min-width: 220px;
-    border: 2px solid #2a9fff;
-    border-radius: 6px;
-    background: rgba(0,40,80,0.65);
-    color: #2a9fff;
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-decoration: none;
-    cursor: pointer;
-    text-shadow: 0 0 12px rgba(42,159,255,0.45);
-    box-shadow: 0 0 24px rgba(42,159,255,0.25);
-  }
   #status {
     min-height: 1.2em;
     color: #5eb6ff;
-    font-size: 13px;
+    font-size: 16px;
+    font-weight: 700;
   }
   #foot {
     position: fixed;
@@ -106,18 +87,18 @@
 <div id="wrap">
   <p id="brand-title">SLOPKIT</p>
   <p id="brand-sub">PS5 jailbreak</p>
-  <img id="logo" src="slopkit/ps5-hero.jpg" alt="">
-  <a id="start"
-     href="slopkit/poops.html?go=1&amp;auto=1&amp;production=1&amp;trigger=netcontrol&amp;attempts=8&amp;only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&amp;log=debug&amp;payload=1&amp;v=final"
-     tabindex="0">Press X to start</a>
-  <div id="status"></div>
+  <div id="status">Starting...</div>
 </div>
 <div id="foot"><b>Created by X-F1REBALL-X</b></div>
 <script>
-try {
-  var start = document.getElementById("start");
-  if (start) start.focus();
-} catch (e) {}
+(function () {
+  var target = "slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=final";
+  try {
+    location.replace(target);
+  } catch (e) {
+    location.href = target;
+  }
+})();
 </script>
 </body>
 </html>
