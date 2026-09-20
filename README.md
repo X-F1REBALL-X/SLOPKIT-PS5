@@ -1,10 +1,10 @@
 # slopkitgta
 
-PS5 homebrew toolkit host UI, styled like [PS4JB](https://github.com/X-F1REBALL-X/PS4JB) (blue / black PlayStation look).
+PS5 jailbreak host UI, styled like [PS4JB](https://github.com/X-F1REBALL-X/PS4JB) (blue / black PlayStation look).
 
 **Live:** [https://x-f1reball-x.github.io/slopkitgta/](https://x-f1reball-x.github.io/slopkitgta/)
 
-Open `index.html`, press **Press X to start**, and the page loads the toolkit under `slopkit/`.
+Open `index.html` on the PS5 browser, press **Press X to start**, and the page runs the PS5 jailbreak / toolkit under `slopkit/`.
 
 ![readme](readme.png)
 
