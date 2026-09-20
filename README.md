@@ -2,7 +2,7 @@
 
 PS5 jailbreak host by **X-F1REBALL-X**.
 
-**Live:** [https://x-f1reball-x.github.io/slopkitgta/](https://x-f1reball-x.github.io/slopkitgta/)
+**Live:** [https://x-f1reball-x.github.io/SLOPKIT-PS5/](https://x-f1reball-x.github.io/SLOPKIT-PS5/)
 
 ## How to use
 
