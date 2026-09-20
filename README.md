@@ -17,3 +17,14 @@ Supported firmwares: about **9.00–12.00**.
 - Host UI: **X-F1REBALL-X**
 - Exploit chain: [jordyidk/slopkit](https://github.com/jordyidk/slopkit)
 - Egy, Sonic, Yenyen, Zeco, Gezine, Echostretch, Ufm42, TheFloW, John Tornblom, Flatz, Idlesauce, and the PS5 R&D Discord
+
+## WebKit Autoloader (homescreen icon)
+
+After a successful jailbreak, you can install [PLK WebKit Autoloader](https://github.com/itsPLK/ps5-webkit-autoloader) so the next boots use a homescreen app instead of typing a URL.
+
+1. Jailbreak once with this site (browser).
+2. In Payload Manager, send `payloads/webkit-autoloader-installer.elf` (or load it via elfldr on port 9021).
+3. Reboot once.
+4. Open **WebKit Autoloader** from the PS5 homescreen.
+
+Note: Autoloader uses PLK's built-in exploit host, not this site's custom UI.
