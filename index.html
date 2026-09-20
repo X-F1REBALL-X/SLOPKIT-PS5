@@ -69,6 +69,13 @@
     font-size: 16px;
     font-weight: 700;
   }
+  #fwMeta {
+    margin: 0;
+    color: #9ad2ff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
   #foot {
     position: fixed;
     left: 0; right: 0; bottom: 10px;
@@ -88,9 +95,20 @@
 <div id="wrap">
   <p id="brand-title">SLOPKIT</p>
   <p id="brand-sub">PS5 jailbreak</p>
+  <p id="fwMeta">FW —</p>
   <div id="status">Starting...</div>
 </div>
 <div id="foot"><b>Created by X-F1REBALL-X</b></div>
+<script>
+(function () {
+  try {
+    var m = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent || "");
+    var fw = m ? m[1] : "";
+    var el = document.getElementById("fwMeta");
+    if (el) el.textContent = fw ? ("FW " + fw + " · chain poops") : "FW —";
+  } catch (e) {}
+})();
+</script>
 <script>
 (function () {
   var target = "slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=final";

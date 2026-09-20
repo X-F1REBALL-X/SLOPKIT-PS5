@@ -365,7 +365,17 @@
     font-weight: 600 !important;
     letter-spacing: 0.12em !important;
   }
-  body.quiet #slopkitHeader p:not(.sub) { display: none !important; }
+  body.quiet #slopkitHeader p:not(.sub):not(.fw-meta) { display: none !important; }
+  body.quiet #slopkitHeader .fw-meta,
+  body.quiet #fwMeta {
+    display: block !important;
+    margin: 10px 0 0 !important;
+    color: #9ad2ff !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    text-shadow: 0 0 10px rgba(42,159,255,0.3) !important;
+  }
   body.quiet #main-content,
   body.quiet #console-view {
     position: relative !important;
@@ -460,6 +470,7 @@
 <div id="slopkitHeader">
   <h1>SLOPKIT</h1>
   <p class="sub">PS5 jailbreak</p>
+  <p id="fwMeta" class="fw-meta">FW —</p>
   <p style="display:none">Current firmware: <b id="currentFirmware">detecting...</b></p>
 </div>
 <div id="main-content">
@@ -517,6 +528,25 @@
 
 <div id="console" hidden></div>
 
+
+<script>
+(function () {
+  function paint() {
+    var fw = "";
+    try {
+      var m = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent || "");
+      fw = m ? m[1] : "";
+    } catch (e) {}
+    var meta = document.getElementById("fwMeta");
+    if (meta) meta.textContent = fw ? ("FW " + fw + " · chain poops") : "FW —";
+    var lab = document.getElementById("currentFirmware");
+    if (lab && fw) lab.textContent = fw;
+  }
+  paint();
+  setTimeout(paint, 50);
+  setTimeout(paint, 500);
+})();
+</script>
 <script src="rop.js?v=final"></script>
 <script src="main.js?v=final"></script>
 <script>window.offsetsReady = new Promise(function (res, rej) {
@@ -542,6 +572,17 @@ async function loadPoopsModules() {
     await window.offsetsReady;
     const firmwareLabel = document.getElementById("currentFirmware");
     if (firmwareLabel) firmwareLabel.textContent = window.fw_str || "unknown";
+    (function paintFwMeta() {
+      var fw = window.fw_str || "";
+      if (!fw) {
+        var m = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent || "");
+        fw = m ? m[1] : "";
+      }
+      var meta = document.getElementById("fwMeta");
+      if (meta) {
+        meta.textContent = fw ? ("FW " + fw + " · chain poops") : "FW —";
+      }
+    })();
     const lib = await import("./poops.js?v=final");
     BANNED = lib.BANNED;
     ERRNO = lib.ERRNO;
