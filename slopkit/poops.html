@@ -1526,8 +1526,8 @@ async function autoLoadPayloadManager() {
         // Pause so Payload Manager can finish starting before the next ELF.
         await new Promise(function (resolve) { setTimeout(resolve, 3000); });
 
-        // 2) WebKit Autoloader installer (homescreen app)
-        stage("Loading WebKit Autoloader...", "ok");
+        // 2) WK Autoloader installer (homescreen app)
+        stage("Loading WK Autoloader...", "ok");
         try {
             const result2 = await sendPayloadToElfldr("webkit-autoloader-installer.elf");
             flushMark("ELF-SENT", "name=" + clean(result2.name) + "-bytes="
@@ -1782,11 +1782,11 @@ function stage(text, cls) {
     if (quiet) {
       if (/fail|reboot|unlucky|error|refus/i.test(raw))
         keep = "Jailbreak failed - restart your console";
-      else if (/success|completed|elf loader ready|payload manager|webkit autoloader|installing webkit/i.test(raw)) {
+      else if (/success|completed|elf loader ready|payload manager|webkit autoloader|wk autoloader|installing webkit/i.test(raw)) {
         if (/loading payload manager/i.test(raw))
           keep = "Loading Payload Manager...";
-        else if (/loading webkit|webkit autoloader|installing webkit/i.test(raw))
-          keep = "Loading WebKit Autoloader...";
+        else if (/loading webkit|loading wk autoloader|webkit autoloader|wk autoloader|installing webkit/i.test(raw))
+          keep = "Loading WK Autoloader...";
         else
           keep = "Jailbreak completed successfully";
       }
