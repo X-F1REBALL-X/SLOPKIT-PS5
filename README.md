@@ -12,7 +12,9 @@ About **9.00 – 12.00**.
 
 ## What it does
 
-On first jailbreak it installs:
+Everything installs **automatically** after jailbreak. **No download needed.**
+
+On first run it installs:
 
 1. **Payload Manager**
 2. **PS5-WebKit-Autoloader** (homescreen app)
