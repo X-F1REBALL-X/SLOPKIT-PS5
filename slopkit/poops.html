@@ -151,13 +151,13 @@
         -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
 
 
-  #cat { box-sizing:border-box; display:block; margin:0 auto 12px;
+  #brand { box-sizing:border-box; display:block; margin:0 auto 12px;
          width:150px; height:150px; max-width:34vw; max-height:34vw;
          border:4px solid #343c49; border-radius:18px;
          box-shadow:0 24px 70px rgba(0,0,0,.5); overflow:hidden; }
-  #cat img { display:block; width:100%; height:100%; object-fit:cover; }
-  #cat.ok  { border-color:#16c60c; }
-  #cat.bad { border-color:#e74856; }
+  #brand img { display:block; width:100%; height:100%; object-fit:cover; }
+  #brand.ok  { border-color:#16c60c; }
+  #brand.bad { border-color:#e74856; }
   #failureMessage { display:none; margin:0 auto 12px; color:#ff6473;
     font-size:25px; font-weight:800; text-align:center; letter-spacing:.02em; }
   #failureMessage.on { display:block; }
@@ -391,7 +391,7 @@
     opacity: 1 !important;
     pointer-events: auto !important;
   }
-  body.quiet #cat,
+  body.quiet #brand,
   body.quiet #scr,
   body.quiet #early,
   body.quiet #cfg,
@@ -495,8 +495,8 @@
 <div id="main-content">
   <div id="console-view" class="app-view selected">
     <div id="failureMessage">Jailbreak failed - restart your console</div>
-    <div id="cat">
-      <img id="catImage" src="ps-logo.jpg" alt="">
+    <div id="brand">
+      <img id="brandImage" src="ps-logo.jpg" alt="">
     </div>
     <h1 style="display:none">SLOPKIT</h1>
     <div id="reboot"></div>
@@ -558,7 +558,7 @@
 
   function paintOk(fw) {
     var meta = document.getElementById("fwMeta");
-    if (meta) meta.textContent = fw ? ("FW " + fw + " · chain poops") : "FW —";
+    if (meta) meta.textContent = fw ? ("FW " + fw) : "FW —";
     var lab = document.getElementById("currentFirmware");
     if (lab && fw) lab.textContent = fw;
   }
@@ -628,7 +628,7 @@ async function loadPoopsModules() {
       }
       var meta = document.getElementById("fwMeta");
       if (meta) {
-        meta.textContent = fw ? ("FW " + fw + " · chain poops") : "FW —";
+        meta.textContent = fw ? ("FW " + fw) : "FW —";
       }
     })();
     const lib = await import("./poops.js?v=final");
@@ -1184,21 +1184,11 @@ let consoleNetworkInfo = { ip: "", name: "" };
 
 const PAYLOADS = Object.freeze([
     { title: "ftpsrv", description: "FTP server. Runs on port 2121.",
-        name: "ftpsrv-ps5.elf", info: "ftpsrv-ps5.elf - john-tornblom" },
-    { title: "gdbsrv", description: "GDB server. Runs on port 2159.",
-        name: "gdbsrv-ps5.elf", info: "gdbsrv-ps5.elf - john-tornblom" },
-    { title: "klogsrv", description: "Kernel log server. Runs on port 3232.",
-        name: "klogsrv-ps5.elf", info: "klogsrv-ps5.elf - john-tornblom" },
-    { title: "shsrv", description: "Telnet shell server. Runs on port 2323.",
-        name: "shsrv-ps5.elf", info: "shsrv-ps5.elf - john-tornblom" },
-    { title: "websrv", description: "Homebrew web server. Runs on port 8080.",
-        name: "websrv-ps5.elf", info: "websrv-ps5.elf - john-tornblom" },
+        name: "ftpsrv-ps5.elf", info: "ftpsrv-ps5.elf" },
     { title: "ps5-kstuff", description: "Kernel support payload and FPKG enabler.",
-        name: "kstuff.elf", info: "kstuff.elf - EchoStretch" },
-    { title: "PLK Manager", description: "Payload management tools.",
-        name: "PLK.elf", info: "PLK.elf - PLK" },
+        name: "kstuff.elf", info: "kstuff.elf" },
     { title: "ShadowMountPlus", description: "Mount and manage game images.",
-        name: "shadowmountplus.elf", info: "shadowmountplus.elf - Drakmor" }
+        name: "shadowmountplus.elf", info: "shadowmountplus.elf" }
 ]);
 
 function populatePayloadButtons() {
@@ -1747,7 +1737,7 @@ function setCatResult(success) {
     if (cat) {
         cat.className = success ? "ok" : "bad";
         if (success) {
-            const image = document.getElementById("catImage");
+            const image = document.getElementById("brandImage");
         }
     }
 }
