@@ -1487,22 +1487,11 @@ async function autoLoadPayloadManager() {
         // Pause so Payload Manager can finish starting before the next ELF.
         await new Promise(function (resolve) { setTimeout(resolve, 3000); });
 
-        // 2) WebKit Autoloader installer (homescreen app)
-        stage("Loading WebKit Autoloader...", "ok");
-        try {
-            const result2 = await sendPayloadToElfldr("webkit-autoloader-installer.elf");
-            flushMark("ELF-SENT", "name=" + clean(result2.name) + "-bytes="
-                + result2.bytes + "-target=" + clean(result2.target)
-                + "-port=" + result2.port + "-why=webkit-autoloader-installer");
-            if (result2.closeWarning)
-                flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result2.name)
-                    + "-why=" + clean(result2.closeWarning.message || result2.closeWarning));
-            stage("Jailbreak completed successfully", "ok");
-        } catch (error2) {
-            flushMark("ELF-SEND-FAILED", "name=webkit-autoloader-installer.elf-why="
-                + clean(error2 && error2.message ? error2.message : error2));
-            stage("Jailbreak completed successfully", "ok");
-        }
+        // 2) WebKit Autoloader installer — skipped for now.
+        // Opening the browser mid-ELF-send was crashing the console.
+        // Send the installer manually from the payload menu after a fixed build.
+        flushMark("WKAL-AUTO-SKIPPED", "why=wait-for-sender-bug");
+        stage("Jailbreak completed successfully", "ok");
     } catch (error) {
         flushMark("ELF-SEND-FAILED", "name=post-jb-autoload-why="
             + clean(error && error.message ? error.message : error));
