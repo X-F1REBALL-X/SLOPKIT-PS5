@@ -4,12 +4,15 @@ if (!navigator.userAgent.includes('PlayStation 5')) {
         document.body && document.body.classList.add("device-blocked");
         function paintBlocked(device) {
             var meta = document.getElementById("fwMeta");
-            if (meta) meta.textContent = device;
+            if (meta) {
+                meta.textContent = "";
+                meta.style.display = "none";
+            }
             var stage = document.getElementById("stage");
-            if (stage) stage.textContent = "Detected: " + device;
+            if (stage) stage.textContent = device + " — not supported";
             var fail = document.getElementById("failureMessage");
             if (fail) {
-                fail.textContent = "This is not a PS5 (" + device + "). Open this on a PS5 browser.";
+                fail.textContent = device + " — not supported";
                 fail.className = "on";
             }
         }

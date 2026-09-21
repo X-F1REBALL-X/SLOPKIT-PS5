@@ -116,11 +116,12 @@
 
   function showBlocked(device) {
     if (meta) {
-      meta.textContent = device;
-      meta.className = "blocked";
+      meta.textContent = "";
+      meta.className = "";
+      meta.style.display = "none";
     }
     if (status) {
-      status.textContent = "Detected: " + device + " — open on a PS5";
+      status.textContent = device + " — not supported";
       status.className = "blocked";
     }
   }
