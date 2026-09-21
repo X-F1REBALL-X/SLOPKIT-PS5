@@ -448,6 +448,17 @@
     letter-spacing: 0.08em;
     color: #9ad2ff;
     text-shadow: 0 0 10px rgba(42, 159, 255, 0.35);
+    margin: 0 0 4px;
+  }
+  #elapsed {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #7eb6e8;
+    text-shadow: 0 0 8px rgba(42, 159, 255, 0.25);
     margin: 0 0 10px;
   }
 
@@ -469,7 +480,8 @@
     color: #ff8a96 !important;
   }
   body.device-blocked #progress-wrap,
-  body.device-blocked #progress-pct {
+  body.device-blocked #progress-pct,
+  body.device-blocked #elapsed {
     display: none !important;
   }
   body.device-blocked #failureMessage {
@@ -505,6 +517,7 @@
     <div id="stage">Jailbreak in progress</div>
     <div id="progress-wrap" aria-hidden="true"><div id="progress-bar"></div></div>
     <div id="progress-pct">0%</div>
+    <div id="elapsed">Elapsed 0:00</div>
     <div id="vitals"></div>
     <div id="cfg"></div>
     <pre id="early"></pre>
@@ -2943,10 +2956,18 @@ function lastRunText() {
   var pct = document.getElementById("progress-pct");
   var wrap = document.getElementById("progress-wrap");
   var stageEl = document.getElementById("stage");
+  var elapsedEl = document.getElementById("elapsed");
   if (!bar || !pct) return;
   var value = 0;
   var finished = false;
   var t0 = Date.now();
+  var elapsedTimer = 0;
+  function formatElapsed(ms) {
+    var s = Math.floor(ms / 1000);
+    var m = Math.floor(s / 60);
+    s = s % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
   function paint(v) {
     if (v < 0) v = 0;
     if (v > 100) v = 100;
@@ -2954,16 +2975,41 @@ function lastRunText() {
     bar.style.width = v + "%";
     pct.textContent = Math.floor(v) + "%";
   }
+  function stopElapsed() {
+    if (elapsedTimer) {
+      try { clearInterval(elapsedTimer); } catch (e) {}
+      elapsedTimer = 0;
+    }
+  }
+  function startElapsed() {
+    if (elapsedTimer || !elapsedEl) return;
+    elapsedEl.textContent = "Elapsed 0:00";
+    elapsedTimer = setInterval(function () {
+      if (!elapsedEl) return;
+      elapsedEl.textContent = "Elapsed " + formatElapsed(Date.now() - t0);
+    }, 250);
+  }
   function complete() {
     if (finished) return;
     finished = true;
     try { clearInterval(timer); } catch (e) {}
-    // Set 100% immediately — WebKit may stall timers after the exploit.
-    paint(100);
+    stopElapsed();
     if (wrap) wrap.style.display = "block";
     if (pct) pct.style.display = "block";
+    // Smooth ramp to 100 instead of jumping from ~50.
+    var from = value;
+    var start = Date.now();
+    var anim = setInterval(function () {
+      var p = Math.min(1, (Date.now() - start) / 650);
+      paint(from + (100 - from) * p);
+      if (p >= 1) {
+        try { clearInterval(anim); } catch (e3) {}
+        paint(100);
+      }
+    }, 30);
   }
   window.__ps5ProgressComplete = complete;
+  startElapsed();
   var timer = setInterval(function () {
     if (finished) return;
     if (window.__ps5JailbreakDone || window.elfldrSpawned) {
@@ -2971,13 +3017,13 @@ function lastRunText() {
       return;
     }
     var sec = (Date.now() - t0) / 1000;
-    // Slow fill: ~60% by ~20s, ~80% by ~45s, soft-cap ~90% until real success.
-    var target = 90 * (1 - Math.exp(-sec / 14));
-    if (target > value) paint(target);
-    // If nothing finished after 3 minutes, surface a failure instead of hanging.
+    // Even pace: soft-cap ~92% over ~55s (avoids sitting at 50 then jumping).
+    var target = 92 * (1 - Math.exp(-sec / 26));
+    if (target > value + 0.15) paint(target);
     if (sec > 180 && stageEl) {
       stageEl.textContent = "Jailbreak failed - restart your console";
       stageEl.className = "bad";
+      stopElapsed();
       paint(100);
       finished = true;
       try { clearInterval(timer); } catch (e2) {}
