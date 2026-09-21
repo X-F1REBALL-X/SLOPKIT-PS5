@@ -35,4 +35,4 @@ Homescreen app: [PS5-WebKit-Autoloader](https://github.com/X-F1REBALL-X/PS5-WebK
 
 ## Credits
 
-**Thanks**: jordyidk · TheFloW · Gezine · Echo Stretch · idlesauce · and the scene
+**Thanks**: jordyidk · TheFloW · Gezine · Echo Stretch · itsPLK · and the scene
