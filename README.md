@@ -6,6 +6,8 @@ PS5 jailbreak host.
 
 **Link:** https://x-f1reball-x.github.io/SLOPKIT-PS5/
 
+![Jailbreak in progress](screenshots/jailbreak-progress.png)
+
 ## Firmwares
 
 About **9.00 – 12.00**.
