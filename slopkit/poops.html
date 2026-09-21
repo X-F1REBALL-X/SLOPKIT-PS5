@@ -523,6 +523,11 @@
     color: #2a9fff !important; font-size: 18px !important;
     letter-spacing: .04em !important; text-transform: none !important;
   }
+  /* Quiet UI: one fail line only (#stage). Avoid duplicate restart message. */
+  body.quiet #failureMessage,
+  body.quiet #failureMessage.on {
+    display: none !important;
+  }
 
 </style>
 </head>
