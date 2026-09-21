@@ -31,7 +31,7 @@ The Autoloader updates **only if a newer version is available**. Same version is
 4. Reboot
 5. Open **WK Autoloader** from the homescreen
 
-Homescreen app: [PS5-WebKit-Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader)
+Homescreen app: [WK Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader)
 
 ## Credits
 
