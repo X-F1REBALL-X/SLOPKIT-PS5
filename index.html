@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Accept-CH" content="Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Platform">
 <title>sjb — PS5 jailbreak</title>
-<link rel="preload" href="slopkit/ps5-hero.jpg" as="image">
+<link rel="preload" href="slopkit/ps5-hero.jpg?v=sjb1" as="image">
 <style>
   html, body {
     margin: 0;
@@ -20,7 +20,7 @@
     position: fixed;
     top: 0; right: 0; bottom: 0; left: 0;
     z-index: 0;
-    background: #000 url("slopkit/ps5-hero.jpg") center center no-repeat;
+    background: #000 url("slopkit/ps5-hero.jpg?v=sjb1") center center no-repeat;
     background-size: cover;
     pointer-events: none;
   }
@@ -128,7 +128,7 @@
   if (!isPs5) {
     // Load device map only off-PS5 (never on the console jailbreak path).
     var s = document.createElement("script");
-    s.src = "slopkit/device.js?v=5";
+    s.src = "slopkit/device.js?v=6";
     s.onload = function () {
       try {
         showBlocked(typeof detectDeviceFromUa === "function" ? detectDeviceFromUa(ua) : "Unknown device");
@@ -145,7 +145,7 @@
   if (meta) meta.textContent = "FW " + fw;
   if (status) status.textContent = "Starting...";
 
-  var target = "slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=final";
+  var target = "slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=sjb1";
   try {
     location.replace(target);
   } catch (e) {
