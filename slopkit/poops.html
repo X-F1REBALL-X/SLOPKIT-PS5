@@ -525,6 +525,11 @@
     color: #2a9fff !important; font-size: 18px !important;
     letter-spacing: .04em !important; text-transform: none !important;
   }
+  /* Quiet UI: one fail line on #stage only (avoid double "restart console"). */
+  body.quiet #failureMessage,
+  body.quiet #failureMessage.on {
+    display: none !important;
+  }
 
 </style>
 </head>
@@ -1745,9 +1750,12 @@ function stage(text, cls) {
     var quiet = document.body && document.body.classList.contains("quiet");
     var keep = raw;
     if (quiet) {
-      if (/fail|reboot|unlucky|error|refus/i.test(raw))
-        keep = "Jailbreak failed - restart your console";
-      else if (/success|completed|elf loader ready|payload manager|webkit autoloader|installing webkit/i.test(raw)) {
+      if (cls === "bad" || /fail|reboot|unlucky|error|refus/i.test(raw)) {
+        if (/try again|close browser|retry/i.test(raw))
+          keep = "Jailbreak failed - close browser and try again";
+        else
+          keep = "Jailbreak failed - restart your console";
+      } else if (/success|completed|elf loader ready|payload manager|webkit autoloader|installing webkit/i.test(raw)) {
         if (/loading payload manager/i.test(raw))
           keep = "Loading Payload Manager...";
         else if (/loading webkit|webkit autoloader|installing webkit/i.test(raw))
@@ -2530,7 +2538,7 @@ async function runLadder() {
     else if (mustReboot)
         stage("Jailbreak failed - restart your console", "bad");
     else if (failed || aborted)
-        stage("Jailbreak failed - restart your console", "bad");
+        stage("Jailbreak failed - close browser and try again", "bad");
     else
         stage("Jailbreak completed successfully", "ok");
 
