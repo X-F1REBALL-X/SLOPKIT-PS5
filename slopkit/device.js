@@ -1,3 +1,41 @@
+/* Device label for non-PS5 block screen. Prefer Client Hints; UA is fallback. */
+
+var DEVICE_MODEL_NAMES = {
+  // OnePlus (Oppo's CPH codes)
+  CPH2747: "OnePlus 15",
+  CPH2645: "OnePlus 13",
+  CPH2653: "OnePlus 13",
+  CPH2581: "OnePlus 12",
+  CPH2573: "OnePlus 12",
+  CPH2449: "OnePlus 11",
+  CPH2423: "OnePlus 11",
+  CPH2413: "OnePlus 10 Pro",
+  CPH2415: "OnePlus 10T",
+  CPH2417: "OnePlus Nord",
+  CPH2451: "OnePlus Nord 3",
+  CPH2493: "OnePlus Nord CE 3",
+  // Samsung examples
+  "SM-S928B": "Samsung Galaxy S24 Ultra",
+  "SM-S918B": "Samsung Galaxy S23 Ultra",
+  "SM-S911B": "Samsung Galaxy S23",
+  "SM-G991B": "Samsung Galaxy S21",
+  "SM-A546B": "Samsung Galaxy A54"
+};
+
+function marketingNameForModel(model) {
+  if (!model) return "";
+  var key = String(model).trim();
+  if (DEVICE_MODEL_NAMES[key]) return DEVICE_MODEL_NAMES[key];
+  var upper = key.toUpperCase();
+  if (DEVICE_MODEL_NAMES[upper]) return DEVICE_MODEL_NAMES[upper];
+  // Generic OnePlus / Oppo CPH family
+  if (/^CPH\d+/i.test(key)) return "OnePlus";
+  if (/^SM-/i.test(key)) return "Samsung";
+  if (/^Pixel\s*\d/i.test(key)) return key;
+  if (/^ONEPLUS/i.test(key)) return key.replace(/^ONEPLUS[\s_-]*/i, "OnePlus ");
+  return "";
+}
+
 function detectDeviceFromUa(ua) {
   ua = ua || "";
   if (/PlayStation 5/i.test(ua)) return "PlayStation 5";
@@ -14,8 +52,9 @@ function detectDeviceFromUa(ua) {
   if (/Android/.test(ua)) {
     var am = /Android ([\d.]+)/.exec(ua);
     var brand = /;\s*([^;)]+?)\s+Build\//.exec(ua);
-    var name = brand ? brand[1].replace(/\s+/g, " ").trim() : "Android phone";
-    // Chrome freezes UA Android version at 10 — do not trust it alone
+    var raw = brand ? brand[1].replace(/\s+/g, " ").trim() : "";
+    var market = marketingNameForModel(raw);
+    var name = market ? (market + " · " + raw) : (raw || "Android phone");
     if (am && (am[1] === "10" || am[1].indexOf("10.") === 0)) {
       return name + " (checking real Android version…)";
     }
@@ -45,11 +84,22 @@ function formatDeviceHints(uaFallback, hints) {
   if (!platform && navigator.userAgentData) {
     platform = navigator.userAgentData.platform || "";
   }
+  var market = marketingNameForModel(model);
+  var ver = platVer ? platVer.split(".")[0] : "";
+
   if (/Android/i.test(platform) || /Android/i.test(uaFallback)) {
-    var ver = platVer ? platVer.split(".")[0] : "";
-    if (model && ver) return model + " (Android " + ver + ")";
-    if (model) return model + " (Android)";
-    if (ver) return "Android phone (Android " + ver + ")";
+    var parts = [];
+    if (market) parts.push(market);
+    if (model && model !== market) parts.push(model);
+    var head = parts.length ? parts.join(" · ") : (model || "Android phone");
+    if (ver) return head + " (Android " + ver + ")";
+    return head + " (Android)";
+  }
+
+  if (market && model) {
+    return ver
+      ? market + " · " + model + " (" + platform + " " + ver + ")"
+      : market + " · " + model;
   }
   if (model && platVer) return model + " (" + platform + " " + platVer + ")";
   if (model) return model;
