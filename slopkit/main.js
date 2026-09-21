@@ -1,51 +1,20 @@
-function detectDevice(ua) {
-    ua = ua || "";
-    if (/PlayStation 5/i.test(ua)) return "PlayStation 5";
-    if (/PlayStation 4/i.test(ua)) return "PlayStation 4";
-    if (/PlayStation Vita|PS Vita/i.test(ua)) return "PS Vita";
-    if (/iPhone/.test(ua)) {
-        var im = /iPhone OS (\d+)[._](\d+)/.exec(ua);
-        return im ? ("iPhone (iOS " + im[1] + "." + im[2] + ")") : "iPhone";
-    }
-    if (/iPad/.test(ua)) {
-        var pm = /CPU OS (\d+)[._](\d+)/.exec(ua);
-        return pm ? ("iPad (iPadOS " + pm[1] + "." + pm[2] + ")") : "iPad";
-    }
-    if (/Android/.test(ua)) {
-        var am = /Android ([\d.]+)/.exec(ua);
-        var brand = /;\s*([^;)]+)\s+Build\//.exec(ua);
-        var name = brand ? brand[1].trim() : "Android";
-        return am ? (name + " (Android " + am[1] + ")") : name;
-    }
-    if (/Windows NT/.test(ua)) {
-        var wm = /Windows NT ([\d.]+)/.exec(ua);
-        var ver = { "10.0": "10/11", "6.3": "8.1", "6.2": "8", "6.1": "7" };
-        var w = wm ? (ver[wm[1]] || wm[1]) : "";
-        return w ? ("Windows PC (" + w + ")") : "Windows PC";
-    }
-    if (/Macintosh|Mac OS X/.test(ua)) {
-        var mm = /Mac OS X (\d+)[._](\d+)/.exec(ua);
-        return mm ? ("Mac (macOS " + mm[1] + "." + mm[2] + ")") : "Mac";
-    }
-    if (/CrOS/.test(ua)) return "Chromebook";
-    if (/Linux/.test(ua)) return "Linux PC";
-    if (/Mobile/.test(ua)) return "Mobile device";
-    return "Unknown device";
-}
-
 if (!navigator.userAgent.includes('PlayStation 5')) {
     try {
-        var device = detectDevice(navigator.userAgent);
+        var ua = navigator.userAgent || "";
         document.body && document.body.classList.add("device-blocked");
-        var meta = document.getElementById("fwMeta");
-        if (meta) meta.textContent = device;
-        var stage = document.getElementById("stage");
-        if (stage) stage.textContent = "Detected: " + device;
-        var fail = document.getElementById("failureMessage");
-        if (fail) {
-            fail.textContent = "This is not a PS5 (" + device + "). Open this on a PS5 browser.";
-            fail.className = "on";
+        function paintBlocked(device) {
+            var meta = document.getElementById("fwMeta");
+            if (meta) meta.textContent = device;
+            var stage = document.getElementById("stage");
+            if (stage) stage.textContent = "Detected: " + device;
+            var fail = document.getElementById("failureMessage");
+            if (fail) {
+                fail.textContent = "This is not a PS5 (" + device + "). Open this on a PS5 browser.";
+                fail.className = "on";
+            }
         }
+        paintBlocked(typeof detectDeviceFromUa === "function" ? detectDeviceFromUa(ua) : "Unknown device");
+        if (typeof resolveDeviceLabel === "function") resolveDeviceLabel(ua, paintBlocked);
     } catch (e) {}
     throw new Error("unsupported device");
 }
