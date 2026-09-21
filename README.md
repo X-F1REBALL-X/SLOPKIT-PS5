@@ -1,6 +1,6 @@
 # SLOPKIT-PS5
 
-PS5 jailbreak.
+PS5 jailbreak host.
 
 **Created by X-F1REBALL-X**
 
@@ -9,6 +9,17 @@ PS5 jailbreak.
 ## Firmwares
 
 About **9.00 – 12.00**.
+
+## What it does
+
+On first jailbreak it installs:
+
+1. **Payload Manager**
+2. **PS5-WebKit-Autoloader** (homescreen app)
+
+After reboot, open **PS5-WebKit-Autoloader** from the homescreen to jailbreak again without the browser host.
+
+The Autoloader updates **only if a newer version is available**. Same version is skipped.
 
 ## Setup
 
