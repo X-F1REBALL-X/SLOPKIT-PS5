@@ -541,7 +541,7 @@
     text-shadow: 0 0 10px rgba(42,159,255,0.35);
     width: 100%;
   }
-  body.done.quiet #closeTimer { display: block !important; }
+  body.done.quiet #closeTimer.close-on { display: block !important; }
 
 
   #slopkitFooter {
@@ -606,7 +606,7 @@
     <div id="progress-pct">0%</div>
     <div id="elapsed">Elapsed 0:00</div>
     <div id="successMsg"><span class="check" aria-hidden="true"></span>Jailbreak completed successfully</div>
-    <div id="closeTimer" aria-live="polite">Closing in 3…</div>
+    <div id="closeTimer" aria-live="polite">Closing in 5…</div>
     <div id="vitals"></div>
     <div id="cfg"></div>
     <pre id="early"></pre>
@@ -1557,10 +1557,17 @@ async function autoLoadPayloadManager() {
                 + clean(error2 && error2.message ? error2.message : error2));
             stage("Jailbreak completed successfully", "ok");
         }
+        // Give Autoloader ELF time to finish before closing the page.
+        await new Promise(function (resolve) { setTimeout(resolve, 2000); });
+        if (typeof window.__ps5StartCloseCountdown === "function")
+            window.__ps5StartCloseCountdown(5);
     } catch (error) {
         flushMark("ELF-SEND-FAILED", "name=post-jb-autoload-why="
             + clean(error && error.message ? error.message : error));
         stage("Jailbreak completed successfully", "ok");
+        await new Promise(function (resolve) { setTimeout(resolve, 2000); });
+        if (typeof window.__ps5StartCloseCountdown === "function")
+            window.__ps5StartCloseCountdown(5);
     }
 }
 
@@ -1817,8 +1824,7 @@ function stage(text, cls) {
         document.body.classList.add("done");
         if (typeof window.__ps5ProgressComplete === "function")
           window.__ps5ProgressComplete();
-        if (typeof window.__ps5StartCloseCountdown === "function")
-          window.__ps5StartCloseCountdown();
+        /* Close only after installs finish — see __ps5StartCloseCountdown */
       } catch (eProg) {}
     }
     if (quiet && /Jailbreak failed/i.test(keep)) {
@@ -3152,11 +3158,16 @@ function lastRunText() {
     try { open("", "_self"); } catch (e2) {}
     try { location.replace("about:blank"); } catch (e3) {}
   }
-  function startCloseCountdown() {
+  function startCloseCountdown(secs) {
     if (started) return;
     started = true;
     var el = document.getElementById("closeTimer");
-    var left = 3;
+    var left = (typeof secs === "number" && secs > 0) ? Math.floor(secs) : 5;
+    if (el) {
+      el.className = (el.className ? el.className + " " : "") + "close-on";
+      el.style.display = "block";
+      el.textContent = "Closing in " + left + "…";
+    }
     function tick() {
       if (el) el.textContent = "Closing in " + left + "…";
       if (left <= 0) {
@@ -3169,17 +3180,18 @@ function lastRunText() {
     tick();
   }
   window.__ps5StartCloseCountdown = startCloseCountdown;
-  var obs = null;
+  /* Fallback: if installs never call us, close 8s after success UI appears */
   try {
-    obs = new MutationObserver(function () {
+    var obs = new MutationObserver(function () {
       if (document.body && document.body.classList.contains("done")) {
-        startCloseCountdown();
+        setTimeout(function () {
+          if (!started) startCloseCountdown(5);
+        }, 12000);
         if (obs) obs.disconnect();
       }
     });
     if (document.body) {
       obs.observe(document.body, { attributes: true, attributeFilter: ["class"] });
-      if (document.body.classList.contains("done")) startCloseCountdown();
     }
   } catch (e) {}
 })();
