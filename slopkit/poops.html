@@ -1419,7 +1419,7 @@ async function autoLoadPayloadManager() {
         } catch (eProg2) {}
 
         // Let elfldr settle before the first ELF (avoids post-JB crashes).
-        await new Promise(function (resolve) { setTimeout(resolve, 1000); });
+        await new Promise(function (resolve) { setTimeout(resolve, 2500); });
 
         // 1) Payload Manager
         stage("Loading Payload Manager...", "ok");
@@ -1436,11 +1436,11 @@ async function autoLoadPayloadManager() {
                 + clean(error && error.message ? error.message : error));
         }
 
-        // Brief pause so elfldr can accept the next ELF.
-        await new Promise(function (resolve) { setTimeout(resolve, 1500); });
+        // Pause so Payload Manager can finish starting before the next ELF.
+        await new Promise(function (resolve) { setTimeout(resolve, 3000); });
 
         // 2) WebKit Autoloader installer (homescreen app)
-        stage("Installing WebKit Autoloader...", "ok");
+        stage("Loading WebKit Autoloader...", "ok");
         try {
             const result2 = await sendPayloadToElfldr("webkit-autoloader-installer.elf");
             flushMark("ELF-SENT", "name=" + clean(result2.name) + "-bytes="
