@@ -7790,12 +7790,12 @@ export function makePoopsEngine(X) {
 
     flushMark(
       "STAGE5-FETCH-BIN-PRE",
-      "url=../payloads/" + (o.binName || "kexp_2026_05_25.bin"),
+      "url=../payloads/" + (o.binName || "kexp.bin"),
     );
     try {
       const parts = [];
       const g = await fetchInto(
-        "../payloads/" + (o.binName || "kexp_2026_05_25.bin"),
+        "../payloads/" + (o.binName || "kexp.bin"),
         (off, chunk) => { parts.push(chunk); },
       );
       binBytes = new Uint8Array(g.total);
@@ -7819,7 +7819,7 @@ export function makePoopsEngine(X) {
     flushMark("STAGE5-FETCH-BIN-OK", "bytes=" + binBytes.length);
 
     try {
-      const name = o.elfName || "elfldr-ps5-1360.elf";
+      const name = o.elfName || "elfldr-ps5.elf";
       flushMark("STAGE5-ELF-FETCH-PRE", "url=../payloads/" + name);
       const response = await fetch("../payloads/" + name, {
         cache: "no-store",
