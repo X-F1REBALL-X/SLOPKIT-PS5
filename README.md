@@ -1,10 +1,10 @@
-# SLOPKIT-PS5
+# sjb
 
 PS5 jailbreak host.
 
 **Created by X-F1REBALL-X**
 
-**Link:** https://x-f1reball-x.github.io/SLOPKIT-PS5/
+**Link:** https://x-f1reball-x.github.io/sjb/
 
 ![Jailbreak in progress](screenshots/jailbreak-progress.png)
 
