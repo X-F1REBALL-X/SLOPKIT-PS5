@@ -1,5 +1,5 @@
 /* Device label for non-PS5 block screen. Prefer Client Hints; UA is fallback. */
-/* device.js?v=3 — bump query when changing maps (cache bust). */
+/* device.js?v=5 — bump query when changing maps (cache bust). */
 
 var DEVICE_MODEL_NAMES = {
   "2107113SG": "Xiaomi 11T Pro",
@@ -90,7 +90,7 @@ var DEVICE_MODEL_NAMES = {
   "SM-X510": "Samsung Galaxy Tab S9 FE",
   "SM-X710": "Samsung Galaxy Tab S9",
   "SM-X810": "Samsung Galaxy Tab S9+",
-  "SM-X910": "Samsung Galaxy Tab S9 Ultra",
+  "SM-X910": "Samsung Galaxy Tab S9 Ultra"
 };
 
 function normalizeModelKey(model) {
@@ -150,10 +150,10 @@ function detectDeviceFromUa(ua) {
     var market = marketingNameForModel(raw);
     var code = normalizeModelKey(raw) || raw;
     var name;
-    if (market && code && market !== code) name = market + " · " + code;
+    if (market && code && market !== code) name = market + " / " + code;
     else name = market || code || "Android phone";
     if (am && (am[1] === "10" || am[1].indexOf("10.") === 0)) {
-      return name + " (checking real Android version…)";
+      return name + " (checking real Android version...)";
     }
     return am ? (name + " (Android " + am[1] + ")") : name;
   }
@@ -163,7 +163,7 @@ function detectDeviceFromUa(ua) {
     var w = wm ? (ver[wm[1]] || wm[1]) : "";
     var browser = /Edg\//.test(ua) ? "Edge" : (/Firefox\//.test(ua) ? "Firefox" : (/Chrome\//.test(ua) ? "Chrome" : ""));
     var label = w ? ("Windows PC (" + w + ")") : "Windows PC";
-    return browser ? (label + " · " + browser) : label;
+    return browser ? (label + " / " + browser) : label;
   }
   if (/Macintosh|Mac OS X/.test(ua)) {
     var mm = /Mac OS X (\d+)[._](\d+)/.exec(ua);
@@ -199,7 +199,7 @@ function formatDeviceHints(uaFallback, hints) {
     var parts = [];
     if (market) parts.push(market);
     if (code && code !== market) parts.push(code);
-    var head = parts.length ? parts.join(" · ") : (code || "Android device");
+    var head = parts.length ? parts.join(" / ") : (code || "Android device");
     if (tablet && head.indexOf("Tab") < 0 && head.indexOf("Tablet") < 0) {
       head += " tablet";
     }
@@ -222,7 +222,7 @@ function formatDeviceHints(uaFallback, hints) {
   }
 
   if (market && code && market !== code) {
-    return ver ? (market + " · " + code + " (" + platform + " " + ver + ")") : (market + " · " + code);
+    return ver ? (market + " / " + code + " (" + platform + " " + ver + ")") : (market + " / " + code);
   }
   if (code && platVer) return code + " (" + platform + " " + platVer + ")";
   if (code) return code;

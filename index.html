@@ -104,7 +104,6 @@
   <div id="status">Starting...</div>
 </div>
 <div id="foot"><b>Created by X-F1REBALL-X</b></div>
-<script src="slopkit/device.js?v=4"></script>
 <script>
 (function () {
   var ua = navigator.userAgent || "";
@@ -121,14 +120,25 @@
       meta.style.display = "none";
     }
     if (status) {
-      status.textContent = device + " — not supported";
+      status.textContent = device + " - not supported";
       status.className = "blocked";
     }
   }
 
   if (!isPs5) {
-    showBlocked(detectDeviceFromUa(ua));
-    resolveDeviceLabel(ua, showBlocked);
+    // Load device map only off-PS5 (never on the console jailbreak path).
+    var s = document.createElement("script");
+    s.src = "slopkit/device.js?v=5";
+    s.onload = function () {
+      try {
+        showBlocked(typeof detectDeviceFromUa === "function" ? detectDeviceFromUa(ua) : "Unknown device");
+        if (typeof resolveDeviceLabel === "function") resolveDeviceLabel(ua, showBlocked);
+      } catch (e) {
+        showBlocked("Unknown device");
+      }
+    };
+    s.onerror = function () { showBlocked("Unknown device"); };
+    document.head.appendChild(s);
     return;
   }
 
