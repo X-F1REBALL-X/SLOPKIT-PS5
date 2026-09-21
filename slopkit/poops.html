@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>sjb — PS5 jailbreak</title>
-<link rel="preload" href="ps-logo.jpg" as="image">
+<link rel="preload" href="ps-logo.jpg?v=sjb1" as="image">
 
 <script>(function () {
     var pending = [];
@@ -39,7 +39,7 @@
     font: 15px/1.45 "Segoe UI", system-ui, sans-serif;
     padding: 24px 20px 70px; display:flex; flex-direction:column;
     align-items:center; justify-content:center;
-    background: #000 url("ps-logo.jpg") center center no-repeat;
+    background: #000 url("ps-logo.jpg?v=sjb1") center center no-repeat;
     background-size: cover; position: relative; }
   body:before {
     content:""; position:fixed; inset:0; background:rgba(0,0,0,0.62);
@@ -336,7 +336,7 @@
     padding: 24px 20px 70px !important;
     margin: 0 !important;
     overflow: hidden !important;
-    background: #000 url("ps-logo.jpg") center center no-repeat !important;
+    background: #000 url("ps-logo.jpg?v=sjb1") center center no-repeat !important;
     background-size: cover !important;
     color: #2a9fff !important;
     font: 15px/1.45 "Segoe UI", system-ui, sans-serif !important;
@@ -542,7 +542,7 @@
   <div id="console-view" class="app-view selected">
     <div id="failureMessage">Jailbreak failed - restart your console</div>
     <div id="brand">
-      <img id="brandImage" src="ps-logo.jpg" alt="">
+      <img id="brandImage" src="ps-logo.jpg?v=sjb1" alt="">
     </div>
     <h1 style="display:none">sjb</h1>
     <div id="reboot"></div>
@@ -571,7 +571,7 @@
   </div>
   <div id="payloads-view" class="app-view">
     <div class="payloadHeader">
-      <h2>PS5 SlopKit Payloads (9.00-12.00)</h2>
+      <h2>sjb Payloads (9.00-12.00)</h2>
       <div class="payloadEyebrow" id="payloadNetworkStatus">Listening on console port 9021</div>
       <p id="payloadProgress">Select a payload to send it to the ELF loader.</p>
       <a class="homeLink" href="../index.html">Home</a>
@@ -2954,7 +2954,7 @@ function lastRunText() {
 
             link("?trigger=none", "no -- go back to the negative control",
                 "extra");
-            link("../index.html", "back to slopkit", "extra");
+            link("../index.html", "back to sjb", "extra");
         }
         summaryEl.textContent = lastRunText()
             + "\n\nSAME-process re-arm checks, and their limit stated honestly: " + "this page records the first socket fd it is given and the " + "process's uid, and can therefore notice that THIS WebProcess has " + "already run";
