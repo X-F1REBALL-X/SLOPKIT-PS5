@@ -6,9 +6,7 @@ PS5 jailbreak host.
 
 **Link:** https://x-f1reball-x.github.io/sjb/
 
-![sjb](slopkit/ps5-hero.jpg)
-
-![Jailbreak in progress](screenshots/jailbreak-progress.png)
+![sjb](slopkit/sjb.jpg)
 
 ## Firmwares
 
