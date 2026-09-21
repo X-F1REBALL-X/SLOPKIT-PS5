@@ -1,4 +1,4 @@
-if (!navigator.userAgent.includes('PlayStation 5')) {
+if (navigator.userAgent.indexOf('PlayStation 5') < 0) {
     try {
         var ua = navigator.userAgent || "";
         document.body && document.body.classList.add("device-blocked");
@@ -30,9 +30,9 @@ const fw_match = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent);
 window.fw_str = fw_match ? fw_match[1] : "";
 window.fw_float = parseFloat(window.fw_str);
 
-if (!supportedFirmwares.includes(fw_str)) {
+if (supportedFirmwares.indexOf(fw_str) < 0) {
 
-    alert(`Firmware ${fw_str} is unsupported.\n\nSupported: ${supportedFirmwares.join(", ")}`);
+    alert("Firmware " + fw_str + " is unsupported.\n\nSupported: " + supportedFirmwares.join(", "));
     throw new Error("no offsets for fw " + fw_str);
 }
 

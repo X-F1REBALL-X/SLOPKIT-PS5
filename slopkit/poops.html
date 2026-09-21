@@ -438,6 +438,8 @@
     border-radius: 8px;
     background: linear-gradient(90deg, #1464b4, #2a9fff, #7ec8ff);
     box-shadow: 0 0 14px rgba(42, 159, 255, 0.55);
+    -webkit-transition: width 0.28s ease-out;
+    transition: width 0.28s ease-out;
   }
   #progress-pct {
     position: relative;
@@ -536,9 +538,7 @@
 <div id="main-content">
   <div id="console-view" class="app-view selected">
     <div id="failureMessage">Jailbreak failed - restart your console</div>
-    <div id="brand">
-      <img id="brandImage" src="ps-logo.jpg" alt="">
-    </div>
+    <div id="brand" hidden aria-hidden="true"></div>
     <h1 style="display:none">SLOPKIT</h1>
     <div id="reboot"></div>
     <div id="verdict"></div>
@@ -1070,6 +1070,14 @@ function sendRemoteEvents(unloading) {
         clearTimeout(remoteFlushTimer);
         remoteFlushTimer = null;
     }
+    /* GitHub Pages / production host has no /__poops_log — skip fetches
+       that only add network + WebProcess work during the critical path. */
+    try {
+        if (Q.get("production") === "1" || /github\.io$/i.test(location.hostname || "")) {
+            remoteEvents.length = 0;
+            return Promise.resolve();
+        }
+    } catch (eSkip) {}
     if (!remoteEvents.length) return Promise.resolve();
     const events = remoteEvents.splice(0, remoteEvents.length);
     const early = !remoteEarlyAttached && Array.isArray(window.__jbEarly)
@@ -1118,7 +1126,8 @@ function screenMark(tag, extra) {
         clearFailureBanners();
         setCatResult(true);
         showVerdict(false, "Jailbreak completed successfully");
-        stage("Jailbreak completed successfully", "ok");
+        /* Show Loading… immediately — final "completed" comes after autoLoad. */
+        stage("Loading Payload Manager...", "ok");
         autoLoadPayloadManager();
     }
     catState(tag, s0);
@@ -1392,7 +1401,7 @@ function openExistingPayloadMenu() {
     clearFailureBanners();
     setCatResult(true);
     showVerdict(false, "Jailbreak completed successfully");
-    stage("Jailbreak completed successfully", "ok");
+    stage("Loading Payload Manager...", "ok");
     /* showPayloadMenu skipped */ autoLoadPayloadManager();
     flushMark("ELFLDR-REUSED", "bind-probe-found-127.0.0.1-port=9021-owned");
 }
@@ -1462,7 +1471,7 @@ async function autoLoadPayloadManager() {
         } catch (eProg2) {}
 
         // Let elfldr settle before the first ELF (avoids post-JB crashes).
-        await new Promise(function (resolve) { setTimeout(resolve, 2500); });
+        await new Promise(function (resolve) { setTimeout(resolve, 3000); });
 
         // 1) Payload Manager
         stage("Loading Payload Manager...", "ok");
@@ -1480,7 +1489,7 @@ async function autoLoadPayloadManager() {
         }
 
         // Pause so Payload Manager can finish starting before the next ELF.
-        await new Promise(function (resolve) { setTimeout(resolve, 3000); });
+        await new Promise(function (resolve) { setTimeout(resolve, 4000); });
 
         // 2) WebKit Autoloader installer (homescreen app)
         stage("Loading WebKit Autoloader...", "ok");
@@ -1751,6 +1760,10 @@ function stage(text, cls) {
     }
     stageEl.textContent = keep;
     stageEl.className = cls || "";
+    if (quiet && /Loading (Payload Manager|WebKit Autoloader)/i.test(keep)) {
+      /* Keep stage visible while post-JB ELFs load (body.done hides #stage). */
+      try { document.body.classList.remove("done"); } catch (eLoad) {}
+    }
     if (quiet && /completed successfully/i.test(keep)) {
       try {
         window.__ps5JailbreakDone = true;
@@ -3018,7 +3031,7 @@ function lastRunText() {
     elapsedTimer = setInterval(function () {
       if (!elapsedEl) return;
       elapsedEl.textContent = "Elapsed " + formatElapsed(Date.now() - t0);
-    }, 250);
+    }, 1000);
   }
   function complete() {
     if (finished) return;
@@ -3050,7 +3063,7 @@ function lastRunText() {
     var sec = (Date.now() - t0) / 1000;
     // Even pace: soft-cap ~92% over ~55s (avoids sitting at 50 then jumping).
     var target = 92 * (1 - Math.exp(-sec / 26));
-    if (target > value + 0.15) paint(target);
+    if (target > value + 0.35) paint(target);
     if (sec > 180 && stageEl) {
       stageEl.textContent = "Jailbreak failed - restart your console";
       stageEl.className = "bad";
@@ -3059,7 +3072,7 @@ function lastRunText() {
       finished = true;
       try { clearInterval(timer); } catch (e2) {}
     }
-  }, 80);
+  }, 220);
 })();
 </script>
 </body>
