@@ -61,6 +61,17 @@ DNS by **Nomadic** — blocks official system updates.
 
 Homescreen app: [WK Autoloader](https://github.com/X-F1REBALL-X/WK-Autoloader)
 
+
+### Payload Manager debug text
+
+This host ships a patched Payload Manager that hides two on-screen debug lines (autoload countdown and version/IP/Port).
+
+After replacing `payloads/payload-manager.elf` from upstream, run:
+
+```bash
+./tools/patch-payload-manager-debug.sh
+```
+
 ## Credits
 
 **Thanks**: jordyidk · TheFloW · Gezine · Echo Stretch · itsPLK · and the scene
