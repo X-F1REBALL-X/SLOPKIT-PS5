@@ -23,6 +23,15 @@ After reboot, open **WK Autoloader** from the homescreen to jailbreak again with
 
 The Autoloader updates **only if a newer version is available**. Same version is skipped.
 
+## Important: Payload Manager auto-open
+
+If Payload Manager is set to **open its page automatically**, **WK Autoloader will not install**.
+
+Do one of these:
+
+1. **Turn off** Payload Manager auto-open / auto page, then run the jailbreak again from this host — WK Autoloader installs automatically.
+2. **Or** install manually: in Payload Manager, send `webkit-autoloader-installer.elf` (from this host / Releases).
+
 ## Offline
 
 After the first visit caches the host, **no internet is needed** to jailbreak with sjb.
@@ -46,7 +55,7 @@ DNS by **Nomadic** — blocks official system updates.
 2. Open the link on the PS5 browser (first visit: wait for cache)
 3. Wait for the jailbreak to finish
 4. **Payload Manager** opens first
-5. Then **WK Autoloader** installs (browser may open the install page)
+5. Then **WK Autoloader** installs (browser may open the install page) — see Important above if it does not
 6. Reboot
 7. Open **WK Autoloader** from the homescreen
 
