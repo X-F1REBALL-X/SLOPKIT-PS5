@@ -37,9 +37,13 @@ After reboot, open **WK Autoloader** from the homescreen to jailbreak again with
 
 The Autoloader updates **only if a newer version is available**. Same version is skipped.
 
+## Offline
+
+After the first visit caches the host, **no internet is needed** to jailbreak with sjb.
+
 ## Setup
 
-1. Open the link on the PS5 browser
+1. Open the link on the PS5 browser (first visit: wait for cache)
 2. Wait for the jailbreak to finish
 3. First run: Payload Manager installs (WK Autoloader does not yet)
 4. Turn off Payload Manager auto-open
