@@ -14,24 +14,10 @@ Other firmwares will not work on this host. If you are on a different firmware, 
 
 ## What it does
 
-After jailbreak, the host can install:
+After jailbreak, installs automatically (**no download needed**):
 
-1. **Payload Manager**
-2. **WK Autoloader** (homescreen app)
-
-**No download needed.**
-
-### First jailbreak
-
-On the first jailbreak, **WK Autoloader is not installed**.
-
-Payload Manager installs first and opens automatically. That blocks the install page for WK Autoloader.
-
-### Install WK Autoloader (second jailbreak)
-
-1. In Payload Manager, turn off the auto-open / auto-entry page
-2. Run the jailbreak again from this host
-3. **WK Autoloader** installs automatically (no prompt)
+1. **WK Autoloader** (homescreen app) — waits until install finishes
+2. **Payload Manager** — only after Autoloader is done
 
 After reboot, open **WK Autoloader** from the homescreen to jailbreak again without the browser host.
 
@@ -56,11 +42,11 @@ DNS by **Nomadic** — blocks official system updates.
 
 ## Setup
 
-1. Open the link on the PS5 browser (first visit: wait for cache)
-2. Wait for the jailbreak to finish
-3. First run: Payload Manager installs (WK Autoloader does not yet)
-4. Turn off Payload Manager auto-open
-5. Jailbreak again from this host — WK Autoloader installs automatically
+1. Set Nomadic DNS (see Notes)
+2. Open the link on the PS5 browser (first visit: wait for cache)
+3. Wait for the jailbreak to finish
+4. Wait for **WK Autoloader** to finish installing
+5. **Payload Manager** opens after that
 6. Reboot
 7. Open **WK Autoloader** from the homescreen
 

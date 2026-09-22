@@ -1452,7 +1452,17 @@ function setPayloadTileState(tile, state) {
 async function probeExistingElfLoader() {
     // Match UMTX2's safe probe: do not connect an empty client to elfldr.
     // If bind(127.0.0.1:9021) fails, another socket already owns the port.
+    return await probeLocalPortOwned(PAYLOAD_PORT);
+}
+
+/* True when something is already listening on 127.0.0.1:port (bind fails). */
+async function probeLocalPortOwned(port) {
     preparePayloadSender();
+    const addr = payloadSockaddrStore.u8;
+    const prevHi = addr[2];
+    const prevLo = addr[3];
+    addr[2] = (port >>> 8) & 0xff;
+    addr[3] = port & 0xff;
     let fd = -1;
     let portOwned = false;
     try {
@@ -1463,6 +1473,8 @@ async function probeExistingElfLoader() {
         const bound = await sys(SYS_BIND, fd, payloadSockaddrStore.ptr, 0x10);
         portOwned = bound.failed || bound.s32 < 0;
     } finally {
+        addr[2] = prevHi;
+        addr[3] = prevLo;
         if (fd >= 0 && !chainDead) {
             try {
                 const closed = await sys(SYS_CLOSE, fd);
@@ -1471,6 +1483,40 @@ async function probeExistingElfLoader() {
         }
     }
     return portOwned;
+}
+
+const WKALI_PORT = 18181;
+
+/* Wait until WK Autoloader installer finishes (HTTP server on 18181 stops). */
+async function waitForWkAutoloaderInstallDone() {
+    stage("Waiting for WK Autoloader...", "ok");
+    const appearDeadline = Date.now() + 25000;
+    let saw = false;
+    while (Date.now() < appearDeadline) {
+        if (await probeLocalPortOwned(WKALI_PORT)) {
+            saw = true;
+            flushMark("WKALI-SERVER-UP", "port=" + WKALI_PORT);
+            break;
+        }
+        await new Promise(function (r) { setTimeout(r, 400); });
+    }
+    if (!saw) {
+        // Already up to date: installer exits without opening :18181.
+        flushMark("WKALI-SERVER-SKIP", "port=" + WKALI_PORT + "-never-up");
+        await new Promise(function (r) { setTimeout(r, 1500); });
+        return;
+    }
+    stage("Waiting for WK Autoloader install...", "ok");
+    const deadline = Date.now() + 180000;
+    while (Date.now() < deadline) {
+        if (!(await probeLocalPortOwned(WKALI_PORT))) {
+            flushMark("WKALI-SERVER-DOWN", "port=" + WKALI_PORT + "-install-done");
+            await new Promise(function (r) { setTimeout(r, 2000); });
+            return;
+        }
+        await new Promise(function (r) { setTimeout(r, 700); });
+    }
+    flushMark("WKALI-WAIT-TIMEOUT", "port=" + WKALI_PORT);
 }
 
 function openExistingPayloadMenu() {
@@ -1548,6 +1594,8 @@ let payloadManagerLoading = false;
 async function autoLoadPayloadManager() {
     if (payloadManagerLoading || !elfldrSpawned) return;
     payloadManagerLoading = true;
+    const pmOnly = (Q.get("after") === "wkali")
+        || (Q.get("autoload") === "payload-manager");
     try {
         if (payloadMenuEl) {
             payloadMenuEl.classList.remove("on");
@@ -1562,37 +1610,41 @@ async function autoLoadPayloadManager() {
         // Let elfldr settle before the first ELF (avoids post-JB crashes).
         await new Promise(function (resolve) { setTimeout(resolve, 2500); });
 
-        // 1) Payload Manager
-        stage("Loading Payload Manager...", "ok");
-        try {
-            const result = await sendPayloadToElfldr("payload-manager.elf");
-            flushMark("ELF-SENT", "name=" + clean(result.name) + "-bytes="
-                + result.bytes + "-target=" + clean(result.target)
-                + "-port=" + result.port + "-why=payload-manager");
-            if (result.closeWarning)
-                flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result.name)
-                    + "-why=" + clean(result.closeWarning.message || result.closeWarning));
-        } catch (error) {
-            flushMark("ELF-SEND-FAILED", "name=payload-manager.elf-why="
-                + clean(error && error.message ? error.message : error));
+        if (!pmOnly) {
+            // 1) WK Autoloader first — must finish before Payload Manager opens.
+            stage("Loading WK Autoloader...", "ok");
+            try {
+                const result = await sendPayloadToElfldr("webkit-autoloader-installer.elf");
+                flushMark("ELF-SENT", "name=" + clean(result.name) + "-bytes="
+                    + result.bytes + "-target=" + clean(result.target)
+                    + "-port=" + result.port + "-why=webkit-autoloader-installer");
+                if (result.closeWarning)
+                    flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result.name)
+                        + "-why=" + clean(result.closeWarning.message || result.closeWarning));
+            } catch (error) {
+                flushMark("ELF-SEND-FAILED", "name=webkit-autoloader-installer.elf-why="
+                    + clean(error && error.message ? error.message : error));
+            }
+
+            // Wait until installer server on :18181 goes down (= install done).
+            await waitForWkAutoloaderInstallDone();
+        } else {
+            flushMark("WKALI-PM-ONLY", "after=wkali");
         }
 
-        // Pause so Payload Manager can finish starting before the next ELF.
-        await new Promise(function (resolve) { setTimeout(resolve, 3000); });
-
-        // 2) WK Autoloader installer (homescreen app)
-        stage("Loading WK Autoloader...", "ok");
+        // 2) Payload Manager only after Autoloader install finished.
+        stage("Loading Payload Manager...", "ok");
         try {
-            const result2 = await sendPayloadToElfldr("webkit-autoloader-installer.elf");
+            const result2 = await sendPayloadToElfldr("payload-manager.elf");
             flushMark("ELF-SENT", "name=" + clean(result2.name) + "-bytes="
                 + result2.bytes + "-target=" + clean(result2.target)
-                + "-port=" + result2.port + "-why=webkit-autoloader-installer");
+                + "-port=" + result2.port + "-why=payload-manager");
             if (result2.closeWarning)
                 flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result2.name)
                     + "-why=" + clean(result2.closeWarning.message || result2.closeWarning));
             stage("Jailbreak completed successfully", "ok");
         } catch (error2) {
-            flushMark("ELF-SEND-FAILED", "name=webkit-autoloader-installer.elf-why="
+            flushMark("ELF-SEND-FAILED", "name=payload-manager.elf-why="
                 + clean(error2 && error2.message ? error2.message : error2));
             stage("Jailbreak completed successfully", "ok");
         }
@@ -1602,7 +1654,6 @@ async function autoLoadPayloadManager() {
         stage("Jailbreak completed successfully", "ok");
     } finally {
         try { stage("Jailbreak completed successfully", "ok"); } catch (eSt) {}
-        // After Payload Manager / Autoloader sends, close like PS4JB.
         setTimeout(closeBrowserWindow, 1500);
     }
 }
@@ -2884,6 +2935,28 @@ function lastRunText() {
 }
 
 (async function entry() {
+
+    // Hand-off from WK Autoloader installer: JB already done, only open Payload Manager.
+    if (Q.get("after") === "wkali") {
+        try {
+            document.body.classList.add("quiet");
+            document.body.classList.add("done");
+        } catch (eQ) {}
+        stage("Opening Payload Manager...", "ok");
+        elfldrSpawned = true;
+        try { window.elfldrSpawned = true; } catch (eE) {}
+        try {
+            if (await probeExistingElfLoader()) {
+                flushMark("WKALI-HANDOFF", "elfldr-ready");
+            } else {
+                flushMark("WKALI-HANDOFF", "elfldr-probe-miss-still-trying");
+            }
+        } catch (eP) {
+            flushMark("WKALI-HANDOFF", "elfldr-probe-error");
+        }
+        await autoLoadPayloadManager();
+        return;
+    }
 
     screenLine("slopkit -- reading the one-shot safety latch");
 
