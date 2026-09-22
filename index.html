@@ -76,6 +76,13 @@
     font-weight: 600;
     letter-spacing: 0.06em;
   }
+  #fwSupport {
+    margin: 6px 0 0;
+    color: #c8ced8;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
   #status.blocked,
   #fwMeta.blocked {
     color: #ff6473;
@@ -100,6 +107,7 @@
 <div id="wrap">
   <p id="brand-title">sjb</p>
   <p id="brand-sub">PS5 jailbreak</p>
+  <p id="fwSupport">Supported: 9.00 – 12.00 only</p>
   <p id="fwMeta">FW —</p>
   <div id="status">Starting...</div>
 </div>
@@ -143,6 +151,16 @@
   }
 
   if (meta) meta.textContent = "FW " + fw;
+
+  var fwNum = parseFloat(fw);
+  if (!(fwNum >= 9.00 && fwNum <= 12.00)) {
+    if (status) {
+      status.textContent = "FW " + fw + " - not supported (9.00 – 12.00 only). Install WK Autoloader manually.";
+      status.className = "blocked";
+    }
+    return;
+  }
+
   if (status) status.textContent = "Starting...";
 
   var target = "slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=final";

@@ -368,7 +368,22 @@
     font-weight: 600 !important;
     letter-spacing: 0.12em !important;
   }
-  body.quiet #slopkitHeader p:not(.sub):not(.fw-meta) { display: none !important; }
+  body.quiet #slopkitHeader p:not(.sub):not(.fw-meta):not(#fwSupport) { display: none !important; }
+  #fwSupport {
+    margin: 4px 0 0;
+    color: #c8ced8;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  body.quiet #slopkitHeader #fwSupport {
+    display: block !important;
+    margin: 6px 0 0 !important;
+    color: #c8ced8 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+  }
   body.quiet #slopkitHeader .fw-meta,
   body.quiet #fwMeta {
     display: block !important;
@@ -574,6 +589,7 @@
 <div id="slopkitHeader">
   <h1>sjb</h1>
   <p class="sub">PS5 jailbreak</p>
+  <p id="fwSupport">Supported: 9.00 – 12.00 only</p>
   <p id="fwMeta" class="fw-meta">FW —</p>
   <p style="display:none">Current firmware: <b id="currentFirmware">detecting...</b></p>
 </div>
@@ -640,8 +656,24 @@
   var ua = navigator.userAgent || "";
   var m = /PlayStation 5\/(\d+\.\d+)/.exec(ua);
   var isPs5 = !!m;
+  var fwEarly = m ? m[1] : "";
+  var fwNumEarly = fwEarly ? parseFloat(fwEarly) : NaN;
+  var fwSupported = isPs5 && fwNumEarly >= 9.00 && fwNumEarly <= 12.00;
   window.__SLOPKIT_IS_PS5__ = isPs5;
-  window.__SLOPKIT_BLOCKED__ = !isPs5;
+  window.__SLOPKIT_BLOCKED__ = !isPs5 || !fwSupported;
+
+  function paintUnsupportedFw(fw) {
+    try { document.body.className = (document.body.className || "") + " device-blocked"; } catch (e) {}
+    var meta = document.getElementById("fwMeta");
+    if (meta) meta.textContent = fw ? ("FW " + fw) : "FW —";
+    var stage = document.getElementById("stage");
+    if (stage) stage.textContent = "FW " + fw + " - not supported (9.00 – 12.00 only)";
+    var fail = document.getElementById("failureMessage");
+    if (fail) {
+      fail.textContent = "Install WK Autoloader manually for this firmware.";
+      fail.className = "on";
+    }
+  }
 
   function paintOk(fw) {
     var meta = document.getElementById("fwMeta");
@@ -677,6 +709,11 @@
     paintBlocked();
     return;
   }
+
+  if (isPs5 && !fwSupported) {
+    paintUnsupportedFw(fwEarly);
+  }
+
 
   paintOk(m[1]);
   setTimeout(function () { paintOk(window.fw_str || m[1]); }, 50);
