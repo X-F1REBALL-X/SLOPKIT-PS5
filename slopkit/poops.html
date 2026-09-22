@@ -1538,6 +1538,12 @@ async function refreshConsoleNetworkInfo() {
 }
 
 
+function closeBrowserWindow() {
+    // Same idea as PS4JB: try to close the browser tab after success.
+    // PS5 WebKit may ignore this; try anyway.
+    try { window.close(); } catch (eClose) {}
+}
+
 let payloadManagerLoading = false;
 async function autoLoadPayloadManager() {
     if (payloadManagerLoading || !elfldrSpawned) return;
@@ -1594,6 +1600,10 @@ async function autoLoadPayloadManager() {
         flushMark("ELF-SEND-FAILED", "name=post-jb-autoload-why="
             + clean(error && error.message ? error.message : error));
         stage("Jailbreak completed successfully", "ok");
+    } finally {
+        try { stage("Jailbreak completed successfully", "ok"); } catch (eSt) {}
+        // After Payload Manager / Autoloader sends, close like PS4JB.
+        setTimeout(closeBrowserWindow, 1500);
     }
 }
 
