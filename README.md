@@ -31,7 +31,7 @@ Payload Manager installs first and opens automatically. That blocks the install 
 
 1. In Payload Manager, turn off the auto-open / auto-entry page
 2. Run the jailbreak again from this host
-3. You should then get the redirect to install **WK Autoloader**
+3. **WK Autoloader** installs automatically (no prompt)
 
 After reboot, open **WK Autoloader** from the homescreen to jailbreak again without the browser host.
 
@@ -43,10 +43,9 @@ The Autoloader updates **only if a newer version is available**. Same version is
 2. Wait for the jailbreak to finish
 3. First run: Payload Manager installs (WK Autoloader does not yet)
 4. Turn off Payload Manager auto-open
-5. Jailbreak again from this host
-6. Install WK Autoloader when the page asks
-7. Reboot
-8. Open **WK Autoloader** from the homescreen
+5. Jailbreak again from this host — WK Autoloader installs automatically
+6. Reboot
+7. Open **WK Autoloader** from the homescreen
 
 Homescreen app: [WK Autoloader](https://github.com/X-F1REBALL-X/WK-Autoloader)
 
