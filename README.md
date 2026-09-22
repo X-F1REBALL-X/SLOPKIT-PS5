@@ -38,6 +38,10 @@ After the first visit caches the host, **no internet is needed** to jailbreak wi
 
 ## Notes
 
+### Stability
+
+Sometimes the jailbreak can crash. Most of the time it runs fine. If it fails, restart the console and try again.
+
 ### Block Sony updates (DNS)
 
 1. Settings → Network → Set Up Internet Connection.
