@@ -8,7 +8,9 @@ PS5 jailbreak host.
 
 ## Firmwares
 
-About **9.00 – 12.00**.
+**Supported: 9.00 – 12.00 only.**
+
+Other firmwares will not work on this host. If you are on a different firmware, install [WK Autoloader](https://github.com/X-F1REBALL-X/WK-Autoloader) manually.
 
 ## What it does
 
@@ -31,7 +33,7 @@ The Autoloader updates **only if a newer version is available**. Same version is
 4. Reboot
 5. Open **WK Autoloader** from the homescreen
 
-Homescreen app: [WK Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader)
+Homescreen app: [WK Autoloader](https://github.com/X-F1REBALL-X/WK-Autoloader)
 
 ## Credits
 
