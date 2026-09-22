@@ -163,15 +163,7 @@
 
   if (status) status.textContent = "Starting...";
 
-  var params = new URLSearchParams(location.search || "");
-  var target;
-  if (params.get("after") === "wkali") {
-    // Autoloader install finished — only open Payload Manager (no full JB chain).
-    status.textContent = "Opening Payload Manager...";
-    target = "slopkit/poops.html?after=wkali&payload=1&v=final";
-  } else {
-    target = "slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=final";
-  }
+  var target = "slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&v=final";
   try {
     location.replace(target);
   } catch (e) {
