@@ -74,4 +74,18 @@ After replacing `payloads/payload-manager.elf` from upstream, run:
 
 ## Credits
 
-**Thanks**: jordyidk · TheFloW · Gezine · Echo Stretch · itsPLK · and the scene
+With respect to the people behind the 9.00–12.00 chain and tools this host uses:
+
+- **TheFloW** — ExploitNetControlImpl (poops base)
+- **Gezine** / **egycnq** — poops
+- **abc** — PSFree (WebKit userland)
+- **jordyidk** — slopkit
+- **ufm42** — kexp
+- **itsPLK** — Payload Manager / WebKit Autoloader tools
+- **John Tornblom** — ELF loader / payloads
+- **flatz** — support
+- **Sonic** — support
+- **zecoxao** — support
+- **Yenyen** — support
+- **EchoStretch** — support
+- **PS5 R&D Discord** — support
