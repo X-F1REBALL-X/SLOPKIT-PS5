@@ -41,6 +41,19 @@ The Autoloader updates **only if a newer version is available**. Same version is
 
 After the first visit caches the host, **no internet is needed** to jailbreak with sjb.
 
+## Notes
+
+### Block Sony updates (DNS)
+
+1. Settings → Network → Set Up Internet Connection.
+2. Use **Custom** setup.
+3. DNS Settings: **Manual**.
+4. Primary DNS: `62.210.38.117`
+5. Leave Secondary DNS empty.
+6. Save and test connection (fail to Sony is OK).
+
+DNS by **Nomadic** — blocks official system updates.
+
 ## Setup
 
 1. Open the link on the PS5 browser (first visit: wait for cache)
