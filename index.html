@@ -155,7 +155,7 @@
   var fwNum = parseFloat(fw);
   if (!(fwNum >= 9.00 && fwNum <= 12.00)) {
     if (status) {
-      status.textContent = "This host is for FW 9.00 – 12.00 only. Your FW " + fw + " cannot start jailbreak here. Install WK Autoloader manually.";
+      status.textContent = "This firmware is not supported";
       status.className = "blocked";
     }
     return;

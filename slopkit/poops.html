@@ -667,10 +667,10 @@
     var meta = document.getElementById("fwMeta");
     if (meta) meta.textContent = fw ? ("FW " + fw) : "FW —";
     var stage = document.getElementById("stage");
-    if (stage) stage.textContent = "This host is for FW 9.00 – 12.00 only (your FW " + fw + ")";
+    if (stage) stage.textContent = "This firmware is not supported";
     var fail = document.getElementById("failureMessage");
     if (fail) {
-      fail.textContent = "Cannot start jailbreak from sjb on this firmware. Install WK Autoloader manually.";
+      fail.textContent = "This firmware is not supported";
       fail.className = "on";
     }
   }
