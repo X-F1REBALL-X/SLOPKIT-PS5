@@ -42,7 +42,7 @@ After the first visit caches the host, **no internet is needed** to jailbreak wi
 
 Sometimes the jailbreak can crash. Most of the time it runs fine. If it fails, restart the console and try again.
 
-(Sometimes a light page refresh can finish the jailbreak with no full restart. It can also freeze or crash instead — pick what works for you.)
+(On this host page, sometimes a light refresh can finish the jailbreak with no full restart. It can also freeze or crash instead — pick what works for you.)
 
 ### Block Sony updates (DNS)
 
