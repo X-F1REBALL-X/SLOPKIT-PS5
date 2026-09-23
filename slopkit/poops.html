@@ -670,13 +670,17 @@
       }
     } catch (e) {}
     var meta = document.getElementById("fwMeta");
-    if (meta) meta.textContent = fw ? ("FW " + fw) : "FW —";
+    if (meta) {
+      meta.textContent = "";
+      meta.style.display = "none";
+    }
     var stage = document.getElementById("stage");
-    if (stage) stage.textContent = "This firmware is not supported";
+    if (stage) stage.textContent = "PS5";
     var fail = document.getElementById("failureMessage");
     if (fail) {
-      fail.textContent = "This firmware is not supported";
-      fail.className = "on";
+      fail.textContent = "";
+      fail.className = "";
+      fail.style.display = "none";
     }
     var wrap = document.getElementById("progress-wrap");
     var pct = document.getElementById("progress-pct");
@@ -693,7 +697,26 @@
     if (lab && fw) lab.textContent = fw;
   }
 
-  function paintBlocked() {
+  function simpleDeviceName(ua) {
+    ua = ua || "";
+    if (/PlayStation 5/i.test(ua)) return "PS5";
+    if (/PlayStation 4/i.test(ua)) return "PS4";
+    if (/iPhone|iPad/i.test(ua)) return "iPhone";
+    if (/Android/i.test(ua)) return "Android";
+    if (/Windows NT|Macintosh|Mac OS X|CrOS|Linux/i.test(ua)) return "PC";
+    return "PC";
+  }
+
+  function hideProgress() {
+    var wrap = document.getElementById("progress-wrap");
+    var pct = document.getElementById("progress-pct");
+    var elapsed = document.getElementById("elapsed");
+    if (wrap) wrap.style.display = "none";
+    if (pct) { pct.style.display = "none"; pct.textContent = ""; }
+    if (elapsed) { elapsed.style.display = "none"; elapsed.textContent = ""; }
+  }
+
+  function paintBlocked(label) {
     try {
       document.body.classList.add("device-blocked");
       // Disarm exploit URL so the page never auto-runs.
@@ -701,23 +724,42 @@
         history.replaceState(null, "", location.pathname + location.hash);
       }
     } catch (e) {}
+    var name = label || simpleDeviceName(ua);
     var meta = document.getElementById("fwMeta");
-    if (meta) meta.textContent = "Unsupported device";
+    if (meta) {
+      meta.textContent = "";
+      meta.style.display = "none";
+    }
     var lab = document.getElementById("currentFirmware");
-    if (lab) lab.textContent = "unsupported";
+    if (lab) lab.textContent = name;
     var stage = document.getElementById("stage");
-    if (stage) stage.textContent = "Open this on a PS5";
+    if (stage) stage.textContent = name;
     var fail = document.getElementById("failureMessage");
     if (fail) {
-      fail.textContent = "Open this on a PS5";
-      fail.className = "on";
+      fail.textContent = "";
+      fail.className = "";
+      fail.style.display = "none";
     }
-    var pct = document.getElementById("progress-pct");
-    if (pct) pct.textContent = "";
+    hideProgress();
   }
 
   if (!isPs5) {
-    paintBlocked();
+    paintBlocked(simpleDeviceName(ua));
+    // Refine label from device.js when available (still family only).
+    try {
+      var s = document.createElement("script");
+      s.src = "device.js?v=7";
+      s.onload = function () {
+        try {
+          if (typeof resolveDeviceLabel === "function") {
+            resolveDeviceLabel(ua, function (name) { paintBlocked(name || simpleDeviceName(ua)); });
+          } else if (typeof detectDeviceFromUa === "function") {
+            paintBlocked(detectDeviceFromUa(ua));
+          }
+        } catch (e) {}
+      };
+      document.head.appendChild(s);
+    } catch (e) {}
     return;
   }
 
