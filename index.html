@@ -128,7 +128,7 @@
       meta.style.display = "none";
     }
     if (status) {
-      status.textContent = device + " - not supported";
+      status.textContent = device || "PC";
       status.className = "blocked";
     }
   }
@@ -136,7 +136,7 @@
   if (!isPs5) {
     // Load device map only off-PS5 (never on the console jailbreak path).
     var s = document.createElement("script");
-    s.src = "slopkit/device.js?v=6";
+    s.src = "slopkit/device.js?v=7";
     s.onload = function () {
       try {
         showBlocked(typeof detectDeviceFromUa === "function" ? detectDeviceFromUa(ua) : "Unknown device");
@@ -154,8 +154,12 @@
 
   var fwNum = parseFloat(fw);
   if (!(fwNum >= 9.00 && fwNum <= 12.00)) {
+    if (meta) {
+      meta.textContent = "";
+      meta.style.display = "none";
+    }
     if (status) {
-      status.textContent = "This firmware is not supported";
+      status.textContent = "PS5";
       status.className = "blocked";
     }
     return;
