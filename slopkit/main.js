@@ -2,21 +2,32 @@ if (!navigator.userAgent.includes('PlayStation 5')) {
     try {
         var ua = navigator.userAgent || "";
         document.body && document.body.classList.add("device-blocked");
+        function hideProgress() {
+            var wrap = document.getElementById("progress-wrap");
+            var pct = document.getElementById("progress-pct");
+            var elapsed = document.getElementById("elapsed");
+            if (wrap) wrap.style.display = "none";
+            if (pct) { pct.style.display = "none"; pct.textContent = ""; }
+            if (elapsed) { elapsed.style.display = "none"; elapsed.textContent = ""; }
+        }
         function paintBlocked(device) {
+            var name = device || "PC";
             var meta = document.getElementById("fwMeta");
             if (meta) {
                 meta.textContent = "";
                 meta.style.display = "none";
             }
             var stage = document.getElementById("stage");
-            if (stage) stage.textContent = device + " — not supported";
+            if (stage) stage.textContent = name;
             var fail = document.getElementById("failureMessage");
             if (fail) {
-                fail.textContent = device + " — not supported";
-                fail.className = "on";
+                fail.textContent = "";
+                fail.className = "";
+                fail.style.display = "none";
             }
+            hideProgress();
         }
-        paintBlocked(typeof detectDeviceFromUa === "function" ? detectDeviceFromUa(ua) : "Unknown device");
+        paintBlocked(typeof detectDeviceFromUa === "function" ? detectDeviceFromUa(ua) : "PC");
         if (typeof resolveDeviceLabel === "function") resolveDeviceLabel(ua, paintBlocked);
     } catch (e) {}
     throw new Error("unsupported device");
@@ -31,8 +42,28 @@ window.fw_str = fw_match ? fw_match[1] : "";
 window.fw_float = parseFloat(window.fw_str);
 
 if (!supportedFirmwares.includes(fw_str)) {
-
-    alert(`Firmware ${fw_str} is unsupported.\n\nSupported: ${supportedFirmwares.join(", ")}`);
+    try {
+        document.body && document.body.classList.add("device-blocked");
+        var meta = document.getElementById("fwMeta");
+        if (meta) {
+            meta.textContent = "";
+            meta.style.display = "none";
+        }
+        var stage = document.getElementById("stage");
+        if (stage) stage.textContent = "PS5";
+        var fail = document.getElementById("failureMessage");
+        if (fail) {
+            fail.textContent = "";
+            fail.className = "";
+            fail.style.display = "none";
+        }
+        var wrap = document.getElementById("progress-wrap");
+        var pct = document.getElementById("progress-pct");
+        var elapsed = document.getElementById("elapsed");
+        if (wrap) wrap.style.display = "none";
+        if (pct) { pct.style.display = "none"; pct.textContent = ""; }
+        if (elapsed) { elapsed.style.display = "none"; elapsed.textContent = ""; }
+    } catch (e) {}
     throw new Error("no offsets for fw " + fw_str);
 }
 
