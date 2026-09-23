@@ -18,7 +18,7 @@ if (!navigator.userAgent.includes('PlayStation 5')) {
                 meta.style.display = "none";
             }
             var stage = document.getElementById("stage");
-            if (stage) stage.textContent = name;
+            if (stage) stage.textContent = name + " - לא תומך";
             var fail = document.getElementById("failureMessage");
             if (fail) {
                 fail.textContent = "";
@@ -50,7 +50,7 @@ if (!supportedFirmwares.includes(fw_str)) {
             meta.style.display = "none";
         }
         var stage = document.getElementById("stage");
-        if (stage) stage.textContent = "PS5";
+        if (stage) stage.textContent = "PS5 - לא תומך";
         var fail = document.getElementById("failureMessage");
         if (fail) {
             fail.textContent = "";
