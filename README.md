@@ -88,9 +88,9 @@ Thanks:
 - **ufm42** - kexp
 - **itsPLK** - Payload Manager / WebKit Autoloader tools
 - **John Tornblom** - ELF loader / payloads
-- **flatz** - support
-- **Sonic** - support
-- **zecoxao** - support
-- **Yenyen** - support
-- **EchoStretch** - support
-- **PS5 R&D Discord** - support
+- **flatz** - UMTX research
+- **Sonic** - pooP2JB
+- **zecoxao** - firmware dumps
+- **Yenyen** - offsets / research
+- **EchoStretch** - hosts / tools
+- **PS5 R&D Discord** - community research
