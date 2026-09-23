@@ -128,7 +128,7 @@
       meta.style.display = "none";
     }
     if (status) {
-      status.textContent = device || "PC";
+      status.textContent = (device || "PC") + " - לא תומך";
       status.className = "blocked";
     }
   }
@@ -159,7 +159,7 @@
       meta.style.display = "none";
     }
     if (status) {
-      status.textContent = "PS5";
+      status.textContent = "PS5 - לא תומך";
       status.className = "blocked";
     }
     return;
