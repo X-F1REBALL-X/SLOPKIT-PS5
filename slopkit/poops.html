@@ -675,7 +675,7 @@
       meta.style.display = "none";
     }
     var stage = document.getElementById("stage");
-    if (stage) stage.textContent = "PS5 - לא תומך";
+    if (stage) stage.textContent = "PS5 - not supported";
     var fail = document.getElementById("failureMessage");
     if (fail) {
       fail.textContent = "";
@@ -724,7 +724,7 @@
         history.replaceState(null, "", location.pathname + location.hash);
       }
     } catch (e) {}
-    var name = (label || simpleDeviceName(ua)) + " - לא תומך";
+    var name = (label || simpleDeviceName(ua)) + " - not supported";
     var meta = document.getElementById("fwMeta");
     if (meta) {
       meta.textContent = "";
